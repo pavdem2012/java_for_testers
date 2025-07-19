@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 public class RectangleTest {
 
-
     @Test
     void canCalculateArea() {
         double result = Rectangle.rectangleArea(5.0, 4.0);
