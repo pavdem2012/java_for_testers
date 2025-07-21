@@ -1,25 +1,22 @@
 package ru.stqa.geometry.figures;
 
-public class Triangle {
-
-    public static void printTriangleArea(double a, double b, double c) {
-        var text = String.format("Площадь треугольника со сторонами %f, %f и %f = %f",
-                a, b, c, triangleArea(a, b, c));
-        System.out.println(text);
+public record Triangle(double a, double b, double c) {
+    public static void printArea(Triangle t) {
+        System.out.printf("Площадь треугольника со сторонами %f, %f и %f = %f%n",
+                t.a, t.b, t.c, t.area());
     }
 
-    public static void printTrianglePerimeter(double a, double b, double c) {
-        var text = String.format("Периметр треугольника со сторонами %f, %f и %f = %f",
-                a, b, c, trianglePerimeter(a, b, c));
-        System.out.println(text);
+    public static void printPerimeter(Triangle t) {
+        System.out.printf("Периметр треугольника со сторонами %f, %f и %f = %f%n",
+                t.a, t.b, t.c, t.perimeter());
     }
 
-    public static double triangleArea(double a, double b, double c) {
-        double p = trianglePerimeter(a, b, c) / 2;
+    public double area() {
+        double p = perimeter() / 2;
         return Math.sqrt(p * (p - a) * (p - b) * (p - c));
     }
 
-    public static double trianglePerimeter(double a, double b, double c) {
+    public double perimeter() {
         return a + b + c;
     }
 }

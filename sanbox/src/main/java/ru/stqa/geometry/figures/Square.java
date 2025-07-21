@@ -3,12 +3,12 @@ package ru.stqa.geometry.figures;
 public record Square(double side) {
 
 
-    public static void printSquareArea(Square s){
+    public static void printArea(Square s){
         String text = String.format("Площадь квадрата со стороной %f = %f" , s.side, s.area());
         System.out.println(text);
     }
 
-    public static void printSquarePerimeter(Square s){
+    public static void printPerimeter(Square s){
         String text = String.format("Периметер квадрата со стороной %f = %f" , s.side, s.area());
         System.out.println(text);
     }

@@ -2,22 +2,22 @@ package ru.stqa.geometry.figures;
 
 public record Rectangle(double a, double b) {
 
-    public static void printRectangleArea(double a, double b) {
-        var text = String.format("Площадь прямоугольника со сторонами %f b %f = %f", a, b, rectangleArea(a,b));
+    public static void printRectangleArea(Rectangle r) {
+        var text = String.format("Площадь прямоугольника со сторонами %f b %f = %f", r.a, r.b, r.rectangleArea());
 
         System.out.println(text);
     }
 
-    public static void printRectanglePerimeter(double a, double b) {
-        var text = String.format("Периметер прямоугольника со сторонами %f b %f = %f", a, b, rectanglePerimeter(a,b));
+    public static void printRectanglePerimeter(Rectangle r) {
+        var text = String.format("Периметер прямоугольника со сторонами %f b %f = %f", r.a, r.b, r.rectanglePerimeter());
 
         System.out.println(text);
     }
 
-    static Double rectangleArea(double a, double b) {
+    public double rectangleArea() {
         return a * b;
     }
-    static Double rectanglePerimeter(double a, double b) {
+    public double rectanglePerimeter() {
         return (a + b)*2;
     }
 }
