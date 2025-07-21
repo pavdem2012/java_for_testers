@@ -8,13 +8,15 @@ public class RectangleTest {
 
     @Test
     void canCalculateArea() {
-        double result = Rectangle.rectangleArea(5.0, 4.0);
+        var Rectangle = new Rectangle(5.0, 4.0);
+        double result = Rectangle.rectangleArea();
         Assertions.assertEquals(20.0, result);
     }
 
     @Test
     void canCalculatePerimeter() {
-        double result = Rectangle.rectanglePerimeter(5.0, 4.0);
+        var Rectangle = new Rectangle(5.0, 4.0);
+        double result = Rectangle.rectanglePerimeter();
         Assertions.assertEquals(18.0, result);
     }
 }
