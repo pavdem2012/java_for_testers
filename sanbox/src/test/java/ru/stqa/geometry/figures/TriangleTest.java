@@ -94,5 +94,39 @@ public class TriangleTest {
         Assertions.assertEquals(3.0, triangle.perimeter() / 2);
     }
 
+    @Test
+    void testEquality() {
+        var t1 = new Triangle(3.0, 4.0, 5.0);
+        var t2 = new Triangle(3.0, 4.0, 5.0);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    void testEqualityDifferentOrder1() {
+        var t1 = new Triangle(3.0, 4.0, 5.0);
+        var t2 = new Triangle(4.0, 5.0, 3.0);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    void testEqualityDifferentOrder2() {
+        var t1 = new Triangle(3.0, 4.0, 5.0);
+        var t2 = new Triangle(5.0, 3.0, 4.0);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    void testInequality() {
+        var t1 = new Triangle(3.0, 4.0, 5.0);
+        var t2 = new Triangle(6.0, 8.0, 10.0);
+        Assertions.assertNotEquals(t1, t2);
+    }
+
+    @Test
+    void testInequalityDifferentSides() {
+        var t1 = new Triangle(2.0, 3.0, 4.0);
+        var t2 = new Triangle(2.0, 3.0, 3.5);
+        Assertions.assertNotEquals(t1, t2);
+    }
 
 }
