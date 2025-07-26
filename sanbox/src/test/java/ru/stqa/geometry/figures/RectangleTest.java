@@ -19,4 +19,32 @@ public class RectangleTest {
         double result = Rectangle.rectanglePerimeter();
         Assertions.assertEquals(18.0, result);
     }
+
+    @Test
+    void cannotCreateRectangleWithNegativeASide() {
+        try {
+            new Rectangle(-5.0, 3.0);
+            Assertions.fail();
+        } catch (IllegalArgumentException exception) {
+            // OK
+        }
+    }
+    @Test
+    void cannotCreateRectangleWithNegativeBSide() {
+        try {
+            new Rectangle(5.0, -3.0);
+            Assertions.fail();
+        } catch (IllegalArgumentException exception) {
+            // OK
+        }
+    }
+    @Test
+    void cannotCreateRectangleWithNegativeSides() {
+        try {
+            new Rectangle(-5.0, -3.0);
+            Assertions.fail();
+        } catch (IllegalArgumentException exception) {
+            // OK
+        }
+    }
 }
