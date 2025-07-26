@@ -29,6 +29,7 @@ public class RectangleTest {
             // OK
         }
     }
+
     @Test
     void cannotCreateRectangleWithNegativeBSide() {
         try {
@@ -38,6 +39,7 @@ public class RectangleTest {
             // OK
         }
     }
+
     @Test
     void cannotCreateRectangleWithNegativeSides() {
         try {
@@ -46,5 +48,19 @@ public class RectangleTest {
         } catch (IllegalArgumentException exception) {
             // OK
         }
+    }
+
+    @Test
+    void testEquality() {
+        var r1 = new Rectangle(5.0,4.0);
+        var r2 = new Rectangle(5.0,4.0);
+        Assertions.assertEquals(r1, r2);
+    }
+
+    @Test
+    void testEquality2() {
+        var r1 = new Rectangle(5.0,4.0);
+        var r2 = new Rectangle(4.0,5.0);
+        Assertions.assertEquals(r1, r2);
     }
 }
