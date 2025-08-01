@@ -1,3 +1,4 @@
+import model.GroupData;
 import org.junit.jupiter.api.Test;
 
 public class GroupRemovalTests extends TestBase{
@@ -6,7 +7,7 @@ public class GroupRemovalTests extends TestBase{
     public void canRemoveGroup() throws InterruptedException {
         openGroupsPage();
         if (isGroupPresent()) {
-            createGroup("group_name", "group_header", "group_footer");
+            createGroup(new GroupData("name", "header", "footer"));
         }
         removeGroup();
     }

@@ -1,3 +1,4 @@
+import model.GroupData;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -36,15 +37,18 @@ public class TestBase {
         }
     }
 
-    protected void createGroup(String group_name, String group_header, String group_footer) throws InterruptedException {
+    protected void createGroup(GroupData group) throws InterruptedException {
         driver.findElement(By.name("new")).click();
-        Thread.sleep(300);
-        driver.findElement(By.name("group_name")).sendKeys(group_name);
-        driver.findElement(By.name("group_header")).sendKeys(group_header);
-        driver.findElement(By.name("group_footer")).sendKeys(group_footer);
+        Thread.sleep(50);
+        driver.findElement(By.name("group_name")).click();
+        driver.findElement(By.name("group_name")).sendKeys(group.name());
+        driver.findElement(By.name("group_header")).click();
+        driver.findElement(By.name("group_header")).sendKeys(group.header());
+        driver.findElement(By.name("group_footer")).click();
+        driver.findElement(By.name("group_footer")).sendKeys(group.footer());
         driver.findElement(By.name("submit")).click();
-        Thread.sleep(300);
-        driver.findElement(By.linkText("groups")).click();
+        Thread.sleep(50);
+        driver.findElement(By.linkText("group page")).click();
     }
 
     protected void openGroupsPage() {
