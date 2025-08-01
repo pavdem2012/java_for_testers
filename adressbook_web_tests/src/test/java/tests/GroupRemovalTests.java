@@ -7,11 +7,10 @@ public class GroupRemovalTests extends TestBase{
 
     @Test
     public void canRemoveGroup() throws InterruptedException {
-        app.openGroupsPage();
-        if (app.isGroupPresent()) {
-            app.createGroup(new GroupData("name", "header", "footer"));
+        if (!app.groups().isGroupPresent()) {
+            app.groups().createGroup(new GroupData("name", "header", "footer"));
         }
-        app.removeGroup();
+        app.groups().removeGroup();
     }
 
 }

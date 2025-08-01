@@ -7,21 +7,16 @@ public class GroupCreationTests extends TestBase{
 
     @Test
     public void canCreateGroup() throws InterruptedException {
-        app.openGroupsPage();
-        app.createGroup(new GroupData("group name", "group header", "group footer"));
+        app.groups().createGroup(new GroupData("group name", "group header", "group footer"));
     }
 
     @Test
     public void canCreateGroupWithEmptyName() throws InterruptedException {
-        app.openGroupsPage();
-        app.createGroup(new GroupData());
+        app.groups().createGroup(new GroupData());
     }
 
     @Test
     public void canCreateGroupWithNameOnly() throws InterruptedException {
-        app.openGroupsPage();
-        var emptyGroup = new GroupData();
-        var groupWithName = emptyGroup.withName("some name");
-        app.createGroup(groupWithName);
+        app.groups().createGroup(new GroupData().withName("some name"));
     }
 }
