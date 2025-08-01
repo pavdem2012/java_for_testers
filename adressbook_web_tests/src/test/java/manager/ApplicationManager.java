@@ -1,13 +1,11 @@
 package manager;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class ApplicationManager {
-    protected  WebDriver driver;
+    protected WebDriver driver;
     private LoginHelper session;
     private GroupHelper groups;
 
@@ -22,26 +20,16 @@ public class ApplicationManager {
     }
 
     public LoginHelper session() {
-        if(session == null){
+        if (session == null) {
             session = new LoginHelper(this);
         }
         return session;
     }
 
     public GroupHelper groups() {
-        if(groups == null){
+        if (groups == null) {
             groups = new GroupHelper(this);
         }
         return groups;
     }
-
-    public boolean isElementPresent(By locator) {
-        try {
-            driver.findElement(locator);
-            return true;
-        } catch (NoSuchElementException exception) {
-            return false;
-        }
-    }
-
 }
