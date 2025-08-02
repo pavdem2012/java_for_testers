@@ -21,21 +21,64 @@ public class GroupHelper extends HelperBase {
 
     public void removeGroup() throws InterruptedException {
         openGroupsPage();
-        click(By.name("selected[]"));
-        click(By.xpath("(//input[@name='delete'])[2]"));
+        selectGroup();
+        removeSelectedGroup();
         Thread.sleep(50);
-        click(By.linkText("group page"));
+        returnToGroupsPage();
     }
+
 
     public void createGroup(GroupData group) throws InterruptedException {
         openGroupsPage();
-        click(By.name("new"));
+        initGroupCreation();
         Thread.sleep(50);
+        fillGroupForm(group);
+        submitGroupCreation();
+        Thread.sleep(50);
+        returnToGroupsPage();
+    }
+
+
+    public void modifyGroup(GroupData modifiedGroup) {
+        openGroupsPage();
+        selectGroup();
+        initGroupModification();
+        fillGroupForm(modifiedGroup);
+        submitGroupModification();
+        returnToGroupsPage();
+    }
+
+    private void removeSelectedGroup() {
+        click(By.xpath("(//input[@name='delete'])[2]"));
+    }
+
+    private void returnToGroupsPage() {
+        click(By.linkText("group page"));
+    }
+
+    private void submitGroupModification() {
+        manager.driver.findElement(By.name("update")).click();
+    }
+
+    private void fillGroupForm(GroupData group) {
         type(By.name("group_name"), group.name());
         type(By.name("group_header"), group.header());
         type(By.name("group_footer"), group.footer());
+    }
+
+    private void initGroupModification() {
+        manager.driver.findElement(By.name("edit")).click();
+    }
+
+    private void selectGroup() {
+        click(By.name("selected[]"));
+    }
+
+    private void initGroupCreation() {
+        click(By.name("new"));
+    }
+
+    private void submitGroupCreation() {
         click(By.name("submit"));
-        Thread.sleep(50);
-        click(By.linkText("group page"));
     }
 }
