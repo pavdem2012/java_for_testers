@@ -8,6 +8,10 @@ public class CollectionTests {
     void arrayTests(){
         var array = new String[] {"a","b","c"};
         Assertions.assertEquals("a", array[0]);
+
+        array[0] = "d";
+        Assertions.assertEquals("d", array[0]);
+
     }
 
 
