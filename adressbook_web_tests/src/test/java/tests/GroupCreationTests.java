@@ -24,4 +24,16 @@ public class GroupCreationTests extends TestBase {
     public void canCreateGroupWithNameOnly() throws InterruptedException {
         app.groups().createGroup(new GroupData().withName("some name"));
     }
+
+    @Test
+    public void canCreateMultipleGroups() throws InterruptedException {
+        int n =5;
+        int groupCont = app.groups().getCount();
+        for (int i = 0; i < n; i++ ) {
+            app.groups().createGroup(new GroupData(randomString(i+1), "group header", "group footer"));
+        }
+        int newGroupCont = app.groups().getCount();
+        Assertions.assertEquals(groupCont + n, newGroupCont);
+
+    }
 }
