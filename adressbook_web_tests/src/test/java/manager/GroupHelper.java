@@ -18,7 +18,7 @@ public class GroupHelper extends HelperBase {
     public void removeGroup() throws InterruptedException {
         openGroupsPage();
         selectGroup();
-        removeSelectedGroup();
+        removeSelectedGroups();
         Thread.sleep(50);
         returnToGroupsPage();
     }
@@ -44,7 +44,7 @@ public class GroupHelper extends HelperBase {
         returnToGroupsPage();
     }
 
-    private void removeSelectedGroup() {
+    private void removeSelectedGroups() {
         click(By.xpath("(//input[@name='delete'])[2]"));
     }
 
@@ -81,5 +81,18 @@ public class GroupHelper extends HelperBase {
     public int getCount() {
         openGroupsPage();
         return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllGroups() {
+        openGroupsPage();
+        selectAllGroups();
+        removeSelectedGroups();
+    }
+
+    private void selectAllGroups() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox:checkboxes){
+            checkbox.click();
+        }
     }
 }

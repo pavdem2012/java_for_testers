@@ -18,4 +18,13 @@ public class GroupRemovalTests extends TestBase{
 
     }
 
+    @Test
+    public void canRemoveGroupsAtOnce() throws InterruptedException {
+        if (app.groups().getCount() == 0) {
+            app.groups().createGroup(new GroupData("name", "header", "footer"));
+        }
+        app.groups().removeAllGroups();
+        Assertions.assertEquals(0, app.groups().getCount());
+    }
+
 }
