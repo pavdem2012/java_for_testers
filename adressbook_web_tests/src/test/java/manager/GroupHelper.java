@@ -14,10 +14,6 @@ public class GroupHelper extends HelperBase {
         }
     }
 
-    public boolean isGroupPresent() {
-        openGroupsPage();
-        return isElementPresent(By.name("selected[]"));
-    }
 
     public void removeGroup() throws InterruptedException {
         openGroupsPage();
