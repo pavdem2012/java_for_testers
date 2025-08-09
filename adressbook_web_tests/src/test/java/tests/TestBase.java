@@ -2,8 +2,13 @@ package tests;
 
 import manager.ApplicationManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.Random;
+
+import static manager.HelperBase.driver;
 
 public class TestBase {
     protected static ApplicationManager app;
@@ -22,6 +27,13 @@ public class TestBase {
             result = result + (char)('a' + rnd.nextInt(26));
         }
         return result;
+    }
+    public void waitForDomLoaded() {
+        new WebDriverWait(driver, Duration.ofSeconds(15)).until(driver ->
+                ((JavascriptExecutor) driver).executeScript(
+                        "return document.readyState"
+                ).equals("complete")
+        );
     }
 
 }

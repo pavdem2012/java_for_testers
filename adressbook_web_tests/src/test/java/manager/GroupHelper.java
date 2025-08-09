@@ -8,12 +8,15 @@ public class GroupHelper extends HelperBase {
         super(manager);
     }
 
-    public void openGroupsPage() {
+    public static void openGroupsPage() {
         if (!isElementPresent(By.name("new"))) {
             click(By.linkText("groups"));
         }
     }
-
+    public int getCount() {
+        GroupHelper.openGroupsPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
 
     public void removeGroup() throws InterruptedException {
         openGroupsPage();
@@ -78,10 +81,7 @@ public class GroupHelper extends HelperBase {
         click(By.name("submit"));
     }
 
-    public int getCount() {
-        openGroupsPage();
-        return manager.driver.findElements(By.name("selected[]")).size();
-    }
+
 
     public void removeAllGroups() {
         openGroupsPage();

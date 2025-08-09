@@ -2,21 +2,69 @@ package manager;
 
 import model.ContactData;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import tests.TestBase;
 
-import java.time.Duration;
+
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class ContactsHelper extends HelperBase {
-
+    TestBase TestBase = new TestBase();
     public ContactsHelper(ApplicationManager manager) {
         super(manager);
+    }
+
+    public static String generateRandomString(int length) {
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        var random = new Random();
+        return random.ints(length, 0, chars.length())
+                .mapToObj(i -> String.valueOf(chars.charAt(i)))
+                .collect(Collectors.joining());
+    }
+
+    public static String generateRandomEmail() {
+        return generateRandomString(5) + "@" + generateRandomString(3) + ".com";
+    }
+
+    public static String generateRandomPhone() {
+        return "+" + (1000000 + new Random().nextInt(9000000));
+    }
+
+    public static String generateRandomDay() {
+        return String.valueOf(new Random().nextInt(1, 32));
+    }
+
+    public static String generateRandomMonth() {
+        String[] months = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+        return months[new Random().nextInt(months.length)];
+    }
+
+    public static String generateRandomYear(int min, int max) {
+        return String.valueOf(min + new Random().nextInt(max - min));
+    }
+
+    public static String generateRandomGroup() {
+        String[] groups = {"[none]", "eeanszjhts", "group name", "maeupculylg"};
+        return groups[new Random().nextInt(groups.length)];
     }
 
     public void createContact(ContactData contact) {
         initContactCreation();
         fillContactForm(contact);
         submitContactCreation();
+    }
+    public int getCount() {
+
+        TestBase.waitForDomLoaded();
+        ContactsHelper.openHomePage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    private static void openHomePage() {
+        if (!isElementPresent(By.id("maintable"))) {
+            click(By.linkText("home"));
+        }
     }
 
     private void initContactCreation() {
@@ -57,7 +105,7 @@ public class ContactsHelper extends HelperBase {
     public void removeContact() {
         openContactsPage();
         selectFirstContact();
-        deleteSelectedContacts();
+        removeSelectedContacts();
     }
 
     public boolean isContactPresent() {
@@ -74,16 +122,36 @@ public class ContactsHelper extends HelperBase {
         click(By.name("selected[]"));
     }
 
-    private void deleteSelectedContacts() {
-        click(By.xpath("//input[@value='Delete']"));
-        waitForContactsList();
+
         /*Не смог ничего сделать с этой командой*/
+        //driver.switchTo().alert().accept();
+
+
+    public void removeAllContacts() {
+        openContactsPage();
+        selectAllContacts();
+        removeSelectedContacts();
+    }
+
+    private void removeSelectedContacts() {
+        click(By.xpath(" //input[@value='Delete']"));
         //driver.switchTo().alert().accept();
     }
 
-    private void waitForContactsList() {
-        new WebDriverWait(manager.driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.presenceOfElementLocated(By.name("searchstring")));
+    private void selectAllContacts() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox:checkboxes){
+            checkbox.click();
+        }
     }
 
+    public void removeAllContactsMultiple() {
+        openContactsPage();
+        selectAllContactsMultiple();
+        removeSelectedContacts();
+    }
+
+    private void selectAllContactsMultiple() {
+        manager.driver.findElement(By.id("MassCB")).click();
+    }
 }

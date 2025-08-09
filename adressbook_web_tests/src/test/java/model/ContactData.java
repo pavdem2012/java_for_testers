@@ -113,6 +113,10 @@ public record ContactData(String firstName, String middleName, String lastName, 
         return new ContactData(firstName, middleName, lastName, nickname, photo, title, company, address, homePhone, mobilePhone, workPhone, fax, email, email2, email3, homepage, birthdayDay, birthdayMonth, birthdayYear, anniversaryDay, anniversaryMonth, anniversaryYear);
     }
 
+    public ContactData withGroup(String group) {
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

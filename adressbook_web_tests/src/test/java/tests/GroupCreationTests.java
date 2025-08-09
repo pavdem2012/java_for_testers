@@ -44,10 +44,7 @@ public class GroupCreationTests extends TestBase {
     public void canCreateGroupWithNameOnly() throws InterruptedException {
         app.groups().createGroup(new GroupData().withName("some name"));
     }*/
-public static List<GroupData> negativeGroupProvider() {
-    return new ArrayList<>(List.of(
-            new GroupData("group name'", "", "")));
-}
+
 
     @ParameterizedTest
     @MethodSource("groupProvider")
@@ -60,6 +57,10 @@ public static List<GroupData> negativeGroupProvider() {
 
         Assertions.assertEquals(groupCont + 1, newGroupCont);
 
+    }
+    public static List<GroupData> negativeGroupProvider() {
+        return new ArrayList<>(List.of(
+                new GroupData("group name'", "", "")));
     }
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")

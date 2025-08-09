@@ -9,14 +9,14 @@ import java.io.File;
 
 public class HelperBase {
     protected final ApplicationManager manager;
-    protected final WebDriver driver;
+    public static WebDriver driver = null;
 
     public HelperBase(ApplicationManager manager) {
         this.manager = manager;
         this.driver = manager.driver;
     }
 
-    protected void click(By locator) {
+    protected static void click(By locator) {
         driver.findElement(locator).click();
     }
 
@@ -31,7 +31,7 @@ public class HelperBase {
         }
     }
 
-    protected boolean isElementPresent(By locator) {
+    protected static boolean isElementPresent(By locator) {
         try {
             driver.findElement(locator);
             return true;
@@ -49,5 +49,6 @@ public class HelperBase {
             new Select(driver.findElement(locator)).selectByVisibleText(value);
         }
     }
+
 
 }
