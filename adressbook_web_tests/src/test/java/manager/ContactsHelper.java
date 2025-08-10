@@ -4,7 +4,6 @@ import model.ContactData;
 import org.openqa.selenium.By;
 import tests.TestBase;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class ContactsHelper extends HelperBase {
     TestBase TestBase = new TestBase();
+
     public ContactsHelper(ApplicationManager manager) {
         super(manager);
     }
@@ -56,6 +56,7 @@ public class ContactsHelper extends HelperBase {
         fillContactForm(contact);
         submitContactCreation();
     }
+
     public int getCount() {
 
         TestBase.waitForDomLoaded();
@@ -145,8 +146,8 @@ public class ContactsHelper extends HelperBase {
     private void selectContactById(String id) {
         manager.driver.findElement(By.cssSelector(String.format("input[value='%s']", id))).click();
     }
-        /*Не смог ничего сделать с этой командой*/
-        //driver.switchTo().alert().accept();
+    /*Не смог ничего сделать с этой командой*/
+    //driver.switchTo().alert().accept();
 
 
     public void removeAllContacts() {
@@ -162,7 +163,7 @@ public class ContactsHelper extends HelperBase {
 
     private void selectAllContacts() {
         var checkboxes = manager.driver.findElements(By.name("selected[]"));
-        for (var checkbox:checkboxes){
+        for (var checkbox : checkboxes) {
             checkbox.click();
         }
     }
@@ -175,5 +176,21 @@ public class ContactsHelper extends HelperBase {
 
     private void selectAllContactsMultiple() {
         manager.driver.findElement(By.id("MassCB")).click();
+    }
+
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
+        openHomePage();
+        selectContactById(contact.id());
+        initContactModification();
+        fillContactForm(modifiedContact);
+        submitContactModification();
+    }
+
+    private void initContactModification() {
+        click(By.cssSelector("img[title='Edit']"));
+    }
+
+    private void submitContactModification() {
+        click(By.name("update"));
     }
 }

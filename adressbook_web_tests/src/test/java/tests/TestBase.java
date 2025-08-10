@@ -15,19 +15,21 @@ public class TestBase {
 
     @BeforeEach
     public void setUp() {
-        if (app == null){
+        if (app == null) {
             app = new ApplicationManager();
         }
-        app.init(System.getProperty("browser","chrome"));
+        app.init(System.getProperty("browser", "chrome"));
     }
-    public static String randomString(int n){
+
+    public static String randomString(int n) {
         var rnd = new Random();
         var result = "";
-        for (int i =0; i<n; i++){
-            result = result + (char)('a' + rnd.nextInt(26));
+        for (int i = 0; i < n; i++) {
+            result = result + (char) ('a' + rnd.nextInt(26));
         }
         return result;
     }
+
     public void waitForDomLoaded() {
         new WebDriverWait(driver, Duration.ofSeconds(15)).until(driver ->
                 ((JavascriptExecutor) driver).executeScript(

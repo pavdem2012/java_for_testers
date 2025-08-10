@@ -122,6 +122,7 @@ public record ContactData(String id, String firstName, String middleName, String
         return new ContactData(id, firstName, middleName, lastName, nickname, photo, title, company, address, homePhone, mobilePhone, workPhone, fax, email, email2, email3, homepage, birthdayDay, birthdayMonth, birthdayYear, anniversaryDay, anniversaryMonth, anniversaryYear);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

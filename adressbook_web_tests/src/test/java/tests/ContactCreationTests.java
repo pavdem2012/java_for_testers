@@ -61,27 +61,27 @@ public class ContactCreationTests extends TestBase {
         var result = new ArrayList<ContactData>();
         for (int i = 0; i < 5; i++) {
             result.add(new ContactData()
-                    .withFirstName(ContactsHelper.generateRandomString(i + 5)+"'")
-                    .withMiddleName(ContactsHelper.generateRandomString(i + 5)+"'")
-                    .withLastName(ContactsHelper.generateRandomString(i + 5)+"'")
-                    .withNickname(ContactsHelper.generateRandomString(i + 5)+"'")
-                    .withTitle(ContactsHelper.generateRandomString(i + 10)+"'")
-                    .withCompany(ContactsHelper.generateRandomString(i + 10)+"'")
-                    .withAddress(ContactsHelper.generateRandomString(i + 15)+"'")
-                    .withHomePhone(ContactsHelper.generateRandomPhone()+"'")
-                    .withMobilePhone(ContactsHelper.generateRandomPhone()+"'")
-                    .withWorkPhone(ContactsHelper.generateRandomPhone()+"'")
-                    .withFax(ContactsHelper.generateRandomString(i + 7)+"'")
-                    .withEmail1(ContactsHelper.generateRandomEmail()+"'")
-                    .withEmail2(ContactsHelper.generateRandomEmail()+"'")
-                    .withEmail3(ContactsHelper.generateRandomEmail()+"'")
-                    .withHomepage("https://" + ContactsHelper.generateRandomString(5) + ".com"+"'")
+                    .withFirstName(ContactsHelper.generateRandomString(i + 5) + "'")
+                    .withMiddleName(ContactsHelper.generateRandomString(i + 5) + "'")
+                    .withLastName(ContactsHelper.generateRandomString(i + 5) + "'")
+                    .withNickname(ContactsHelper.generateRandomString(i + 5) + "'")
+                    .withTitle(ContactsHelper.generateRandomString(i + 10) + "'")
+                    .withCompany(ContactsHelper.generateRandomString(i + 10) + "'")
+                    .withAddress(ContactsHelper.generateRandomString(i + 15) + "'")
+                    .withHomePhone(ContactsHelper.generateRandomPhone() + "'")
+                    .withMobilePhone(ContactsHelper.generateRandomPhone() + "'")
+                    .withWorkPhone(ContactsHelper.generateRandomPhone() + "'")
+                    .withFax(ContactsHelper.generateRandomString(i + 7) + "'")
+                    .withEmail1(ContactsHelper.generateRandomEmail() + "'")
+                    .withEmail2(ContactsHelper.generateRandomEmail() + "'")
+                    .withEmail3(ContactsHelper.generateRandomEmail() + "'")
+                    .withHomepage("https://" + ContactsHelper.generateRandomString(5) + ".com" + "'")
                     .withBirthdayDay(ContactsHelper.generateRandomDay())
                     .withBirthdayMonth(ContactsHelper.generateRandomMonth())
-                    .withBirthdayYear(ContactsHelper.generateRandomYear(1900, 2000)+"'")
+                    .withBirthdayYear(ContactsHelper.generateRandomYear(1900, 2000) + "'")
                     .withAnniversaryDay(ContactsHelper.generateRandomDay())
                     .withAnniversaryMonth(ContactsHelper.generateRandomMonth())
-                    .withAnniversaryYear(ContactsHelper.generateRandomYear(2000, 2025)+"'")
+                    .withAnniversaryYear(ContactsHelper.generateRandomYear(2000, 2025) + "'")
                     .withGroup(ContactsHelper.generateRandomGroup()));
         }
         return result;
@@ -110,7 +110,8 @@ public class ContactCreationTests extends TestBase {
         expectedList.sort(fullComparator);
         Assertions.assertEquals(contactCount + 1, newContactCount);
         Assertions.assertEquals(expectedList, newContacts,
-                "Списки контактов не совпадают после создания");    }
+                "Списки контактов не совпадают после создания");
+    }
 
     @ParameterizedTest
     @MethodSource("negativeContactProvider")
