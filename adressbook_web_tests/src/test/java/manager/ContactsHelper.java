@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import tests.TestBase;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -102,9 +104,27 @@ public class ContactsHelper extends HelperBase {
         click(By.name("submit"));
     }
 
-    public void removeContact() {
+
+    public List<ContactData> getList() {
+        openHomePage();
+        var contacts = new ArrayList<ContactData>();
+        var rows = manager.driver.findElements(By.cssSelector("tr[name=entry]"));
+        for (var row : rows) {
+            var lastName = row.findElement(By.xpath("./td[2]")).getText();
+            var firstName = row.findElement(By.xpath("./td[3]")).getText();
+            var id = row.findElement(By.name("selected[]")).getAttribute("value");
+            contacts.add(new ContactData()
+                    .withId(id)
+                    .withFirstName(firstName)
+                    .withLastName(lastName));
+        }
+        return contacts;
+    }
+
+
+    public void removeContact(ContactData contact) {
         openContactsPage();
-        selectFirstContact();
+        selectContactById(contact.id());
         removeSelectedContacts();
     }
 
@@ -118,11 +138,13 @@ public class ContactsHelper extends HelperBase {
         }
     }
 
-    private void selectFirstContact() {
+/*    private void selectFirstContact() {
         click(By.name("selected[]"));
+    }*/
+
+    private void selectContactById(String id) {
+        manager.driver.findElement(By.cssSelector(String.format("input[value='%s']", id))).click();
     }
-
-
         /*Не смог ничего сделать с этой командой*/
         //driver.switchTo().alert().accept();
 

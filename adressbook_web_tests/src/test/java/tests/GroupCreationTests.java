@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupCreationTests extends TestBase {
@@ -25,7 +26,7 @@ public class GroupCreationTests extends TestBase {
         for (int i = 0; i < 5; i++) {
             result.add(new GroupData()
                     .withName(randomString(i + 10))
-                    .withHeader( randomString(i + 10))
+                    .withHeader(randomString(i + 10))
                     .withFooter(randomString(i + 10)));
         }
         return result;
@@ -55,25 +56,39 @@ public class GroupCreationTests extends TestBase {
     @ParameterizedTest
     @MethodSource("groupProvider")
     public void canCreateMultipleGroups(GroupData group) throws InterruptedException {
+        var oldGroups = app.groups().getList();
         int groupCont = app.groups().getCount();
-
         app.groups().createGroup(group);
-
         int newGroupCont = app.groups().getCount();
-
         Assertions.assertEquals(groupCont + 1, newGroupCont);
+        var newGroups = app.groups().getList();
+        Comparator<GroupData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
+        var expectedList = new ArrayList<>(oldGroups);
+
+        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newGroups, expectedList);
 
     }
+
     public static List<GroupData> negativeGroupProvider() {
         return new ArrayList<>(List.of(
                 new GroupData("", "group name'", "", "")));
     }
+
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")
     public void canNotCreateMultipleGroups(GroupData group) throws InterruptedException {
+        var oldGroups = app.groups().getList();
         int groupCont = app.groups().getCount();
         app.groups().createGroup(group);
+        var newGroups = app.groups().getList();
         int newGroupCont = app.groups().getCount();
-        Assertions.assertEquals(groupCont , newGroupCont);
+        Assertions.assertEquals(groupCont, newGroupCont);
+        Assertions.assertEquals(newGroups, oldGroups);
+
     }
 }

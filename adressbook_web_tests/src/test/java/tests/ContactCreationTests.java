@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
@@ -91,17 +92,36 @@ public class ContactCreationTests extends TestBase {
     @MethodSource("contactProvider")
     public void canCreateMultipleContacts(ContactData contact) {
         int contactCount = app.contacts().getCount();
+        var oldContacts = app.contacts().getList();
         app.contacts().createContact(contact);
         int newContactCount = app.contacts().getCount();
+        var newContacts = app.contacts().getList();
+        Comparator<ContactData> fullComparator = Comparator
+                .comparing((ContactData c) -> Integer.parseInt(c.id()))
+                .thenComparing(ContactData::firstName)
+                .thenComparing(ContactData::lastName);
+        oldContacts.sort(fullComparator);
+        newContacts.sort(fullComparator);
+        var expectedList = new ArrayList<>(oldContacts);
+        var newContactWithId = contact.withId(
+                newContacts.get(newContacts.size() - 1).id() // Получаем ID нового контакта
+        );
+        expectedList.add(newContactWithId);
+        expectedList.sort(fullComparator);
         Assertions.assertEquals(contactCount + 1, newContactCount);
-    }
+        Assertions.assertEquals(expectedList, newContacts,
+                "Списки контактов не совпадают после создания");    }
 
     @ParameterizedTest
     @MethodSource("negativeContactProvider")
     public void canNotCreateContact(ContactData contact) {
         int contactCount = app.contacts().getCount();
+        var oldContacts = app.contacts().getList();
         app.contacts().createContact(contact);
+        var newContacts = app.contacts().getList();
         int newContactCount = app.contacts().getCount();
         Assertions.assertEquals(contactCount, newContactCount);
+        Assertions.assertEquals(oldContacts, newContacts,
+                "Списки контактов не совпадают после создания");
     }
 }
