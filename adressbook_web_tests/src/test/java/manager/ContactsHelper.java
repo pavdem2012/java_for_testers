@@ -139,7 +139,7 @@ public class ContactsHelper extends HelperBase {
         }
     }
 
-/*    private void selectFirstContact() {
+    /*  private void selectFirstContact() {
         click(By.name("selected[]"));
     }*/
 
@@ -180,14 +180,14 @@ public class ContactsHelper extends HelperBase {
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         openHomePage();
-        selectContactById(contact.id());
-        initContactModification();
+        //selectContactById(contact.id());
+        initContactModification(contact);
         fillContactForm(modifiedContact);
         submitContactModification();
     }
 
-    private void initContactModification() {
-        click(By.cssSelector("img[title='Edit']"));
+    private void initContactModification(ContactData contact) {
+        click(By.cssSelector(String.format("a[href='edit.php?id=%s']", contact.id())));
     }
 
     private void submitContactModification() {
