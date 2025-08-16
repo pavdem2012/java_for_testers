@@ -5,7 +5,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import java.io.File;
+import java.nio.file.Paths;
 
 public class HelperBase {
     protected final ApplicationManager manager;
@@ -41,7 +41,7 @@ public class HelperBase {
     }
 
     protected void attach(By locator, String file) {
-        driver.findElement(locator).sendKeys(new File(file).getAbsolutePath());
+        driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
     }
 
     protected void select(By locator, String value) {

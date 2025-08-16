@@ -1,89 +1,52 @@
 package tests;
 
-import manager.ContactsHelper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
-    public static List<ContactData> contactProvider() {
+    public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-        var photoPaths = List.of("", "src/test/resources/avatar.jpeg", "src/test/resources/хакатон.jpg");
+        var photoPaths = new ArrayList<>(getAllImageRelativePaths());
         for (var firstName : List.of("", "First")) {
             for (var lastName : List.of("", "Last")) {
                 for (var email : List.of("", "test@example.com")) {
-                    for (var photo : photoPaths) {
+                    for (var ignored : photoPaths) {
                         result.add(new ContactData()
                                 .withFirstName(firstName)
                                 .withLastName(lastName)
                                 .withEmail1(email)
-                                .withPhoto(photo));
+                                .withPhoto(randomFile("src/test/resources/images")));
                     }
                 }
             }
         }
-        for (int i = 0; i < 5; i++) {
-            result.add(new ContactData()
-                    .withFirstName(ContactsHelper.generateRandomString(i + 5))
-                    .withMiddleName(ContactsHelper.generateRandomString(i + 5))
-                    .withLastName(ContactsHelper.generateRandomString(i + 5))
-                    .withNickname(ContactsHelper.generateRandomString(i + 5))
-                    .withPhoto(photoPaths.get(i % photoPaths.size()))
-                    .withTitle(ContactsHelper.generateRandomString(i + 10))
-                    .withCompany(ContactsHelper.generateRandomString(i + 10))
-                    .withAddress(ContactsHelper.generateRandomString(i + 15))
-                    .withHomePhone(ContactsHelper.generateRandomPhone())
-                    .withMobilePhone(ContactsHelper.generateRandomPhone())
-                    .withWorkPhone(ContactsHelper.generateRandomPhone())
-                    .withFax(ContactsHelper.generateRandomString(i + 7))
-                    .withEmail1(ContactsHelper.generateRandomEmail())
-                    .withEmail2(ContactsHelper.generateRandomEmail())
-                    .withEmail3(ContactsHelper.generateRandomEmail())
-                    .withHomepage("https://" + ContactsHelper.generateRandomString(5) + ".com")
-                    .withBirthdayDay(ContactsHelper.generateRandomDay())
-                    .withBirthdayMonth(ContactsHelper.generateRandomMonth())
-                    .withBirthdayYear(ContactsHelper.generateRandomYear(1900, 2000))
-                    .withAnniversaryDay(ContactsHelper.generateRandomDay())
-                    .withAnniversaryMonth(ContactsHelper.generateRandomMonth())
-                    .withAnniversaryYear(ContactsHelper.generateRandomYear(2000, 2025))
-                    .withGroup(ContactsHelper.generateRandomGroup()));
-        }
+        var json = Files.readString(Paths.get("contacts.json"));
+        ObjectMapper mapper = new ObjectMapper();
+        var value = mapper.readValue(json, new TypeReference<List<ContactData>>() {
+        });
+        result.addAll(value);
         return result;
     }
 
-    public static List<ContactData> negativeContactProvider() {
+    public static List<ContactData> negativeContactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-        for (int i = 0; i < 5; i++) {
-            result.add(new ContactData()
-                    .withFirstName(ContactsHelper.generateRandomString(i + 5) + "'")
-                    .withMiddleName(ContactsHelper.generateRandomString(i + 5) + "'")
-                    .withLastName(ContactsHelper.generateRandomString(i + 5) + "'")
-                    .withNickname(ContactsHelper.generateRandomString(i + 5) + "'")
-                    .withTitle(ContactsHelper.generateRandomString(i + 10) + "'")
-                    .withCompany(ContactsHelper.generateRandomString(i + 10) + "'")
-                    .withAddress(ContactsHelper.generateRandomString(i + 15) + "'")
-                    .withHomePhone(ContactsHelper.generateRandomPhone() + "'")
-                    .withMobilePhone(ContactsHelper.generateRandomPhone() + "'")
-                    .withWorkPhone(ContactsHelper.generateRandomPhone() + "'")
-                    .withFax(ContactsHelper.generateRandomString(i + 7) + "'")
-                    .withEmail1(ContactsHelper.generateRandomEmail() + "'")
-                    .withEmail2(ContactsHelper.generateRandomEmail() + "'")
-                    .withEmail3(ContactsHelper.generateRandomEmail() + "'")
-                    .withHomepage("https://" + ContactsHelper.generateRandomString(5) + ".com" + "'")
-                    .withBirthdayDay(ContactsHelper.generateRandomDay())
-                    .withBirthdayMonth(ContactsHelper.generateRandomMonth())
-                    .withBirthdayYear(ContactsHelper.generateRandomYear(1900, 2000) + "'")
-                    .withAnniversaryDay(ContactsHelper.generateRandomDay())
-                    .withAnniversaryMonth(ContactsHelper.generateRandomMonth())
-                    .withAnniversaryYear(ContactsHelper.generateRandomYear(2000, 2025) + "'")
-                    .withGroup(ContactsHelper.generateRandomGroup()));
-        }
+        var json = Files.readString(Paths.get("negative_contacts.json"));
+        ObjectMapper mapper = new ObjectMapper();
+        var value = mapper.readValue(json, new TypeReference<List<ContactData>>() {
+        });
+        result.addAll(value);
         return result;
     }
 
