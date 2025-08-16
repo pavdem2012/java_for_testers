@@ -1,4 +1,4 @@
-package Generator;
+package generator;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
