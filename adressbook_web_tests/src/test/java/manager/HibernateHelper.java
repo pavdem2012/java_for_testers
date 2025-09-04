@@ -1,6 +1,5 @@
 package manager;
 
-
 import manager.hbm.ContactRecord;
 import manager.hbm.GroupRecord;
 import model.ContactData;
@@ -18,8 +17,6 @@ public class HibernateHelper extends HelperBase {
     public HibernateHelper(ApplicationManager manager) {
         super(manager);
         sessionFactory = new Configuration()
-                //.addAnnotatedClass(Book.class)
-                //.addAnnotatedClass(Author.class)
                 .addAnnotatedClass(ContactRecord.class)
                 .addAnnotatedClass(GroupRecord.class)
                 .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
@@ -28,7 +25,8 @@ public class HibernateHelper extends HelperBase {
                 .buildSessionFactory();
     }
 
-    static List<GroupData> convertList(List<GroupRecord> records) {
+    // Группы
+    static List<GroupData> convertGroupList(List<GroupRecord> records) {
         List<GroupData> result = new ArrayList<>();
         for (var record : records) {
             result.add(convert(record));
@@ -40,8 +38,16 @@ public class HibernateHelper extends HelperBase {
         return new GroupData("" + record.id, record.name, record.header, record.footer);
     }
 
+    private static GroupRecord convert(GroupData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
+    }
+
     public List<GroupData> getGroupList() {
-        return convertList(sessionFactory.fromSession(session -> {
+        return convertGroupList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord", GroupRecord.class).list();
         }));
     }
@@ -60,39 +66,95 @@ public class HibernateHelper extends HelperBase {
         });
     }
 
-    private static GroupRecord convert(GroupData data) {
-        var id = data.id();
-        if ("".equals(id)) {
-            id = "0";
-        }
-        return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
-    }
-    static List<ContactData> convertContactList (List<ContactRecord> records){
+    // Контакты
+    static List<ContactData> convertContactList(List<ContactRecord> records) {
         List<ContactData> result = new ArrayList<>();
-        for (var record : records){
+        for (var record : records) {
             result.add(convert(record));
         }
         return result;
     }
 
     private static ContactData convert(ContactRecord record) {
-        return new ContactData().withId(""+record.id)
+        return new ContactData()
+                .withId("" + record.id)
                 .withFirstName(record.firstname)
+                .withMiddleName(record.middlename)
                 .withLastName(record.lastname)
-                .withAddress(record.address);
+                .withNickname(record.nickname)
+                .withTitle(record.title)
+                .withCompany(record.company)
+                .withAddress(record.address)
+                .withHomePhone(record.home)
+                .withMobilePhone(record.mobile)
+                .withWorkPhone(record.work)
+                .withFax(record.fax)
+                .withEmail1(record.email)
+                .withEmail2(record.email2)
+                .withEmail3(record.email3)
+                .withHomepage(record.homepage)
+                .withBirthdayDay(record.bday)
+                .withBirthdayMonth(record.bmonth)
+                .withBirthdayYear(record.byear)
+                .withAnniversaryDay(record.aday)
+                .withAnniversaryMonth(record.amonth)
+                .withAnniversaryYear(record.ayear);
     }
 
     private static ContactRecord convert(ContactData data) {
         var id = data.id();
-        if ("".equals(id)){
+        if ("".equals(id)) {
             id = "0";
         }
-        return new ContactRecord(Integer.parseInt(id),data.firstName(),data.lastName(),data.address());
+        return new ContactRecord(
+                Integer.parseInt(id),
+                data.firstName(),
+                data.middleName(),
+                data.lastName(),
+                data.nickname(),
+                data.title(),
+                data.company(),
+                data.address(),
+                data.homePhone(),
+                data.mobilePhone(),
+                data.workPhone(),
+                data.fax(),
+                data.email(),
+                data.email2(),
+                data.email3(),
+                data.homepage(),
+                data.birthdayDay(),
+                data.birthdayMonth(),
+                data.birthdayYear(),
+                data.anniversaryDay(),
+                data.anniversaryMonth(),
+                data.anniversaryYear()
+        );
     }
 
-    public List<ContactData>getContactsInGroup(GroupData group) {
+    public List<ContactData> getContactList() {
+        return convertContactList(sessionFactory.fromSession(session -> {
+            return session.createQuery("from ContactRecord", ContactRecord.class).list();
+        }));
+    }
+
+    public long getContactCount() {
         return sessionFactory.fromSession(session -> {
-            return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
+            return session.createQuery("select count (*) from ContactRecord", Long.class).getSingleResult();
+        });
+    }
+
+    public void createContact(ContactData contactData) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+            session.persist(convert(contactData));
+            session.getTransaction().commit();
+        });
+    }
+
+    public List<ContactData> getContactsInGroup(GroupData group) {
+        return sessionFactory.fromSession(session -> {
+            return convertContactList(session.get(GroupRecord.class, Integer.parseInt(group.id())).contacts);
         });
     }
 }

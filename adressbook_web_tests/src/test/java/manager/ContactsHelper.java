@@ -195,6 +195,7 @@ public class ContactsHelper extends HelperBase {
     private void submitContactModification() {
         click(By.name("update"));
     }
+
     public void createContact(ContactData contact, GroupData group) {
         initContactCreation();
         fillContactForm(contact);

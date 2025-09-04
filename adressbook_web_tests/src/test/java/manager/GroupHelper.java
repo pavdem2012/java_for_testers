@@ -49,6 +49,9 @@ public class GroupHelper extends HelperBase {
         initGroupModification();
         fillGroupForm(modifiedGroup);
         submitGroupModification();
+
+        Thread.sleep(200);
+
         returnToGroupsPage();
     }
 
@@ -112,4 +115,5 @@ public class GroupHelper extends HelperBase {
         }
         return groups;
     }
+
 }

@@ -30,10 +30,12 @@ public class TestBase {
             app.init(System.getProperty("browser", "chrome"), properties);
         }
     }
+
     @AfterEach
-    void checkDatabaseConsistency(){
+    void checkDatabaseConsistency() {
         app.jdbc().checkConsistency();
     }
+
     public void waitForDomLoaded() {
         new WebDriverWait(driver, Duration.ofSeconds(15)).until(driver ->
                 ((JavascriptExecutor) driver).executeScript(
@@ -41,12 +43,14 @@ public class TestBase {
                 ).equals("complete")
         );
     }
-    public static String randomFile(String dir){
-       var fileNames = new File(dir).list();
-       var rnd = new Random();
-       var index = rnd.nextInt(fileNames.length);
-        return Paths.get(dir,fileNames[index]).toString();
+
+    public static String randomFile(String dir) {
+        var fileNames = new File(dir).list();
+        var rnd = new Random();
+        var index = rnd.nextInt(fileNames.length);
+        return Paths.get(dir, fileNames[index]).toString();
     }
+
     public static List<String> getAllImageRelativePaths() {
         List<String> imagePaths = new ArrayList<>();
         File imagesDir = new File("src/test/resources/images");

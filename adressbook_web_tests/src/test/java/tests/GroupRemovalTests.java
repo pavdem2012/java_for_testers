@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GroupRemovalTests extends TestBase {
     @Test

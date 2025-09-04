@@ -35,7 +35,7 @@ public class GroupCreationTests extends TestBase {
         try (var reader = new FileReader("groups.json");
              var breader = new BufferedReader(reader)) {
             var line = breader.readLine();
-            while (line != null){
+            while (line != null) {
                 json = json + line;
                 line = breader.readLine();
             }
@@ -93,12 +93,14 @@ public class GroupCreationTests extends TestBase {
         Assertions.assertEquals(newGroups, expectedList);
 
     }
+
     public static List<GroupData> singleRandomGroup() throws IOException {
         return List.of(new GroupData()
                 .withName(CommonFunctions.randomString(10))
                 .withHeader(CommonFunctions.randomString(20))
                 .withFooter(CommonFunctions.randomString(30)));
     }
+
     @ParameterizedTest
     @MethodSource("singleRandomGroup")
     public void canCreateGroup(GroupData group) throws InterruptedException {
@@ -135,6 +137,7 @@ public class GroupCreationTests extends TestBase {
         Assertions.assertEquals(newGroupsDBHbm, expectedListDBHbm);
 
     }
+
     public static List<GroupData> negativeGroupProvider() throws IOException {
         var result = new ArrayList<GroupData>();
         var json = Files.readString(Paths.get("negative_groups.json"));

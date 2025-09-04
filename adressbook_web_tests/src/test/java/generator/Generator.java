@@ -127,9 +127,9 @@ public class Generator {
                     .withEmail1(generateRandomEmail() + "'")
                     .withEmail2(generateRandomEmail() + "'")
                     .withEmail3(generateRandomEmail() + "'")
-                    .withHomepage("https://" + CommonFunctions.randomString(5) )
-                    .withBirthdayDay(generateRandomDay() )
-                    .withBirthdayMonth(generateRandomMonth() )
+                    .withHomepage("https://" + CommonFunctions.randomString(5))
+                    .withBirthdayDay(generateRandomDay())
+                    .withBirthdayMonth(generateRandomMonth())
                     .withBirthdayYear(generateRandomYear(1900, 2000))
                     .withAnniversaryDay(generateRandomDay())
                     .withAnniversaryMonth(generateRandomMonth())
@@ -137,6 +137,7 @@ public class Generator {
         }
         return result;
     }
+
     private String randomFile(String dir) {
         var files = new File(dir).listFiles();
         if (files == null || files.length == 0) {
@@ -144,7 +145,6 @@ public class Generator {
         }
         return files[random.nextInt(files.length)].getPath();
     }
-
 
 
     private void save(Object data) throws IOException {
