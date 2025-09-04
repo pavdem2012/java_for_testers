@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id="adressbook_web_tests:test" external.linked.project.path="$MODULE_DIR$/../../adressbook_web_tests" external.root.project.path="$MODULE_DIR$/../../adressbook_web_tests" external.system.id="GRADLE" external.system.module.group="org.example" external.system.module.type="sourceSet" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping />
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager">
     <output-test url="file://$MODULE_DIR$/../../adressbook_web_tests/build/classes/java/test" />
     <exclude-output />
@@ -12,11 +22,16 @@
     <orderEntry type="module" module-name="adressbook_web_tests.main" />
     <orderEntry type="library" name="Gradle: org.jcommander:jcommander:2.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.19.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.mysql:mysql-connector-j:9.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.hibernate.orm:hibernate-core:6.3.0.CR1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter:5.9.1" level="project" />
     <orderEntry type="library" name="Gradle: org.seleniumhq.selenium:selenium-java:4.34.0" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.13.1" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.19.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.19.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:4.31.1" level="project" />
+    <orderEntry type="library" name="Gradle: jakarta.persistence:jakarta.persistence-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: jakarta.transaction:jakarta.transaction-api:2.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-params:5.9.1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.9.1" level="project" />
     <orderEntry type="library" name="Gradle: org.seleniumhq.selenium:selenium-devtools-v136:4.34.0" level="project" />
@@ -57,8 +72,21 @@
     <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-sdk-metrics:1.51.0" level="project" />
     <orderEntry type="library" name="Gradle: io.opentelemetry:opentelemetry-sdk-logs:1.51.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jboss.logging:jboss-logging:3.5.0.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.hibernate.common:hibernate-commons-annotations:6.0.6.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.smallrye:jandex:3.1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml:classmate:1.5.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish.jaxb:jaxb-runtime:4.0.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jakarta.xml.bind:jakarta.xml.bind-api:4.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jakarta.inject:jakarta.inject-api:2.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.antlr:antlr4-runtime:4.10.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.9.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish.jaxb:jaxb-core:4.0.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jakarta.activation:jakarta.activation-api:2.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.9.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.angus:angus-activation:2.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish.jaxb:txw2:4.0.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.sun.istack:istack-commons-runtime:4.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.commons:commons-exec:1.5.0" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="adressbook_web_tests.main" />

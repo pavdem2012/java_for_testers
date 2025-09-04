@@ -1,7 +1,9 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 import tests.TestBase;
 
 import java.util.ArrayList;
@@ -192,5 +194,15 @@ public class ContactsHelper extends HelperBase {
 
     private void submitContactModification() {
         click(By.name("update"));
+    }
+    public void createContact(ContactData contact, GroupData group) {
+        initContactCreation();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitContactCreation();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
 }

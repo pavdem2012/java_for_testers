@@ -1,6 +1,7 @@
 package tests;
 
 import manager.ApplicationManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -29,7 +30,10 @@ public class TestBase {
             app.init(System.getProperty("browser", "chrome"), properties);
         }
     }
-
+    @AfterEach
+    void checkDatabaseConsistency(){
+        app.jdbc().checkConsistency();
+    }
     public void waitForDomLoaded() {
         new WebDriverWait(driver, Duration.ofSeconds(15)).until(driver ->
                 ((JavascriptExecutor) driver).executeScript(

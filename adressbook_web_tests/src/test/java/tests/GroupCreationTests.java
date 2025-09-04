@@ -2,6 +2,7 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.CommonFunctions;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -74,6 +75,8 @@ public class GroupCreationTests extends TestBase {
     @MethodSource("groupProvider")
     public void canCreateMultipleGroups(GroupData group) throws InterruptedException {
         var oldGroups = app.groups().getList();
+        var oldGroupsDB = app.jdbc().getGroupList();
+
         int groupCont = app.groups().getCount();
         app.groups().createGroup(group);
         int newGroupCont = app.groups().getCount();
@@ -90,7 +93,48 @@ public class GroupCreationTests extends TestBase {
         Assertions.assertEquals(newGroups, expectedList);
 
     }
+    public static List<GroupData> singleRandomGroup() throws IOException {
+        return List.of(new GroupData()
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(20))
+                .withFooter(CommonFunctions.randomString(30)));
+    }
+    @ParameterizedTest
+    @MethodSource("singleRandomGroup")
+    public void canCreateGroup(GroupData group) throws InterruptedException {
+        var oldUIGroups = app.groups().getList();
+        var oldGroupsDB = app.jdbc().getGroupList();
+        var oldGroupsDBHbm = app.hbm().getGroupList();
 
+        int groupCount = app.groups().getCount();
+        app.groups().createGroup(group);
+        int newGroupCont = app.groups().getCount();
+        Assertions.assertEquals(groupCount + 1, newGroupCont);
+        var newUIGroups = app.groups().getList();
+        var newGroupsDB = app.jdbc().getGroupList();
+        var newGroupsDBHbm = app.hbm().getGroupList();
+        Comparator<GroupData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newUIGroups.sort(compareById);
+        var maxId = newUIGroups.get(newUIGroups.size() - 1).id();
+        var expectedUIList = new ArrayList<>(oldUIGroups);
+        var expectedListDB = new ArrayList<>(oldGroupsDB);
+        var expectedListDBHbm = new ArrayList<>(oldGroupsDBHbm);
+
+        expectedUIList.add(group.withId(newUIGroups.get(newUIGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedListDB.add(group.withId(maxId));
+        expectedListDBHbm.add(group.withId(maxId));
+
+        expectedUIList.sort(compareById);
+        expectedListDB.sort(compareById);
+        expectedListDBHbm.sort(compareById);
+
+        Assertions.assertEquals(newUIGroups, expectedUIList);
+        Assertions.assertEquals(newGroupsDB, expectedListDB);
+        Assertions.assertEquals(newGroupsDBHbm, expectedListDBHbm);
+
+    }
     public static List<GroupData> negativeGroupProvider() throws IOException {
         var result = new ArrayList<GroupData>();
         var json = Files.readString(Paths.get("negative_groups.json"));

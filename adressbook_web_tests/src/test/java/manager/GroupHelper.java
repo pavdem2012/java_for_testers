@@ -27,7 +27,6 @@ public class GroupHelper extends HelperBase {
         openGroupsPage();
         selectGroup(group);
         removeSelectedGroups();
-        Thread.sleep(50);
         returnToGroupsPage();
     }
 
@@ -43,7 +42,8 @@ public class GroupHelper extends HelperBase {
     }
 
 
-    public void modifyGroup(GroupData group, GroupData modifiedGroup) {
+    public void modifyGroup(GroupData group, GroupData modifiedGroup) throws InterruptedException {
+        Thread.sleep(50);
         openGroupsPage();
         selectGroup(group);
         initGroupModification();
