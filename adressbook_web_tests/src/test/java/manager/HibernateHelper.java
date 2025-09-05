@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -137,46 +136,17 @@ public class HibernateHelper extends HelperBase {
         });
     }
 
-/*    public void createContact(ContactData contactData) {
-        sessionFactory.inSession(session -> {
-            session.getTransaction().begin();
-            session.persist(convert(contactData));
-            session.getTransaction().commit();
-        });
-    }*/
-
     public List<ContactData> getContactsInGroup(GroupData group) {
         return sessionFactory.fromSession(session -> {
             var groupRecord = session.get(GroupRecord.class, Integer.parseInt(group.id()));
-            return convertContactList(groupRecord.contacts); // используем существующее имя contacts
+            return convertContactList(groupRecord.contacts);
         });
     }
 
-/*    public void addContactToGroup(ContactData contact, GroupData group) {
-        sessionFactory.inSession(session -> {
-            session.getTransaction().begin();
-
-            var freshContact = session.get(ContactRecord.class, Integer.parseInt(contact.id()));
-            var freshGroup = session.get(GroupRecord.class, Integer.parseInt(group.id()));
-
-            freshContact.groups.add(freshGroup);
-            session.update(freshContact);
-
-            session.getTransaction().commit();
+    public ContactData getContactById(String id) {
+        return sessionFactory.fromSession(session -> {
+            var contactRecord = session.get(ContactRecord.class, Integer.parseInt(id));
+            return convert(contactRecord);
         });
-    }*/
-
-/*    public void removeContactFromGroup(ContactData contact, GroupData group) {
-        sessionFactory.inSession(session -> {
-            session.getTransaction().begin();
-
-            var freshContact = session.get(ContactRecord.class, Integer.parseInt(contact.id()));
-            var freshGroup = session.get(GroupRecord.class, Integer.parseInt(group.id()));
-
-            freshContact.groups.remove(freshGroup);
-            session.update(freshContact);
-
-            session.getTransaction().commit();
-        });
-    }*/
+    }
 }
