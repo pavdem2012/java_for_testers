@@ -53,7 +53,7 @@ public class GroupCreationTests extends TestBase {
     }
 
 /*    @ParameterizedTest
-    @ValueSource(strings = {"group name", "group name'"})
+    @ValueSource(strings = {"group name", "group name"})
     public void canCreateGroup(String name) throws InterruptedException {
         int groupCont = app.groups().getCount();
         app.groups().createGroup(new GroupData(name, "group header", "group footer"));
