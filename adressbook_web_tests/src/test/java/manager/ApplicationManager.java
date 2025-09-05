@@ -1,5 +1,12 @@
 package manager;
+import model.ContactData;
+import model.GroupData;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -67,5 +74,83 @@ public class ApplicationManager {
             hbm = new HibernateHelper(this);
         }
         return hbm;
+    }
+    public void addContactToGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        selectContactById(contact.id());
+        selectGroupForAction(group.id());
+        clickAddToButton();
+    }
+
+    public void removeContactFromGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        selectGroupInFilter(group.id());
+        selectContactById(contact.id());
+        clickRemoveFromButton();
+    }
+
+    private void openHomePage() {
+        if (!isElementPresent(By.id("maintable"))) {
+            driver.findElement(By.linkText("home")).click();
+        }
+    }
+    private boolean isElementPresent(By locator) {
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void selectContactById(String id) {
+        driver.findElement(By.cssSelector("input[value='" + id + "']")).click();
+    }
+
+    private void selectGroupForAction(String groupId) {
+        WebElement groupSelect = driver.findElement(By.name("to_group"));
+        Select select = new Select(groupSelect);
+        select.selectByValue(groupId);
+    }
+
+    private void selectGroupInFilter(String groupId) {
+        WebElement groupFilter = driver.findElement(By.name("group"));
+        Select select = new Select(groupFilter);
+        select.selectByValue(groupId);
+    }
+
+    private void clickAddToButton() {
+        driver.findElement(By.cssSelector("input[value='Add to']")).click();
+    }
+
+    private void clickRemoveFromButton() {
+        driver.findElement(By.name("remove")).click();
+        acceptAlert();
+    }
+
+    private void acceptAlert() {
+        try {
+            driver.switchTo().alert().accept();
+        } catch (Exception e) {
+            // Алерт не появился, продолжаем
+        }
+    }
+
+    public boolean isContactInGroup(ContactData contact, GroupData group) {
+        var contactsInGroup = hbm().getContactsInGroup(group);
+        return contactsInGroup.stream()
+                .anyMatch(c -> c.id().equals(contact.id()));
+    }
+
+    public List<ContactData> getContactsNotInGroup(GroupData group) {
+        var allContacts = hbm().getContactList();
+        var contactsInGroup = hbm().getContactsInGroup(group);
+        return allContacts.stream()
+                .filter(c -> contactsInGroup.stream().noneMatch(gc -> gc.id().equals(c.id())))
+                .collect(Collectors.toList());
+    }
+
+    public List<ContactData> getContactsInGroup(GroupData group) {
+        return hbm().getContactsInGroup(group);
     }
 }

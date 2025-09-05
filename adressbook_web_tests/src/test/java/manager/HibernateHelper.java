@@ -144,17 +144,46 @@ public class HibernateHelper extends HelperBase {
         });
     }
 
-    public void createContact(ContactData contactData) {
+/*    public void createContact(ContactData contactData) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
             session.persist(convert(contactData));
             session.getTransaction().commit();
         });
-    }
+    }*/
 
     public List<ContactData> getContactsInGroup(GroupData group) {
         return sessionFactory.fromSession(session -> {
-            return convertContactList(session.get(GroupRecord.class, Integer.parseInt(group.id())).contacts);
+            var groupRecord = session.get(GroupRecord.class, Integer.parseInt(group.id()));
+            return convertContactList(groupRecord.contacts); // используем существующее имя contacts
         });
     }
+
+/*    public void addContactToGroup(ContactData contact, GroupData group) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+
+            var freshContact = session.get(ContactRecord.class, Integer.parseInt(contact.id()));
+            var freshGroup = session.get(GroupRecord.class, Integer.parseInt(group.id()));
+
+            freshContact.groups.add(freshGroup);
+            session.update(freshContact);
+
+            session.getTransaction().commit();
+        });
+    }*/
+
+/*    public void removeContactFromGroup(ContactData contact, GroupData group) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+
+            var freshContact = session.get(ContactRecord.class, Integer.parseInt(contact.id()));
+            var freshGroup = session.get(GroupRecord.class, Integer.parseInt(group.id()));
+
+            freshContact.groups.remove(freshGroup);
+            session.update(freshContact);
+
+            session.getTransaction().commit();
+        });
+    }*/
 }
