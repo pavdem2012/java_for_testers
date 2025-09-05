@@ -1,12 +1,14 @@
 package tests;
 
+import common.CommonFunctions;
+import manager.GroupHelper;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
+import java.util.Set;
 
 public class GroupModificationTestsWithDB extends TestBase {
 
@@ -22,9 +24,9 @@ public class GroupModificationTestsWithDB extends TestBase {
         var groupToModify = oldGroupsUI.get(index);
 
         var modifiedData = new GroupData()
-                .withName("Modified Name " + System.currentTimeMillis())
-                .withHeader("Modified Header")
-                .withFooter("Modified Footer");
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(10))
+                .withFooter(CommonFunctions.randomString(10));
 
         app.groups().modifyGroup(groupToModify, modifiedData);
 
@@ -33,55 +35,52 @@ public class GroupModificationTestsWithDB extends TestBase {
         var newGroupsHbm = app.hbm().getGroupList();
         var newGroupsJdbc = app.jdbc().getGroupList();
 
-        // Подготавливаем ожидаемые списки
+        // Создаем expected списки на основе старых данных
         var expectedUIList = new ArrayList<>(oldGroupsUI);
         var expectedHbmList = new ArrayList<>(oldGroupsHbm);
         var expectedJdbcList = new ArrayList<>(oldGroupsJdbc);
 
+        // Для UI: header и footer не отображаются (пустые)
         var expectedModifiedGroupUI = new GroupData()
                 .withId(groupToModify.id())
                 .withName(modifiedData.name())
                 .withHeader("")
                 .withFooter("");
 
-        var expectedModifiedGroup = modifiedData.withId(groupToModify.id());
-        expectedUIList.set(index, expectedModifiedGroupUI);
-        System.out.println(expectedUIList);
-        expectedHbmList.set(index, expectedModifiedGroup);
-        expectedJdbcList.set(index, expectedModifiedGroup);
+        // Для БД: header и footer сохраняются
+        var expectedModifiedGroupDB = new GroupData()
+                .withId(groupToModify.id())
+                .withName(modifiedData.name())
+                .withHeader(modifiedData.header())
+                .withFooter(modifiedData.footer());
 
-        // Сортируем все списки по ID
-        Comparator<GroupData> compareById = (o1, o2) ->
-                Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        // Заменяем измененную группу в expected списках
+        expectedModifiedGroupUI.replaceGroupInList(expectedUIList, groupToModify.id());
+        expectedModifiedGroupDB.replaceGroupInList(expectedHbmList, groupToModify.id());
+        expectedModifiedGroupDB.replaceGroupInList(expectedJdbcList, groupToModify.id());
 
-        expectedUIList.sort(compareById);
-        expectedHbmList.sort(compareById);
-        expectedJdbcList.sort(compareById);
-        newGroupsUI.sort(compareById);
-        newGroupsHbm.sort(compareById);
-        newGroupsJdbc.sort(compareById);
+        // Проверки через множества (игнорируют порядок)
+        Assertions.assertEquals(Set.copyOf(expectedUIList), Set.copyOf(newGroupsUI), "UI списки не совпадают");
+        Assertions.assertEquals(Set.copyOf(expectedHbmList), Set.copyOf(newGroupsHbm), "Hibernate списки не совпадают");
+        Assertions.assertEquals(Set.copyOf(expectedJdbcList), Set.copyOf(newGroupsJdbc), "JDBC списки не совпадают");
 
-        // Проверки
-        Assertions.assertEquals(expectedUIList, newGroupsUI, "UI списки не совпадают");
-        Assertions.assertEquals(expectedHbmList, newGroupsHbm, "Hibernate списки не совпадают");
-        Assertions.assertEquals(expectedJdbcList, newGroupsJdbc, "JDBC списки не совпадают");
+        // Дополнительная проверка: находим измененную группу в новых списках
+        var modifiedGroupUI = GroupHelper.findGroupById(newGroupsUI, groupToModify.id());
+        var modifiedGroupHbm = GroupHelper.findGroupById(newGroupsHbm, groupToModify.id());
+        var modifiedGroupJdbc = GroupHelper.findGroupById(newGroupsJdbc, groupToModify.id());
 
-        // Проверка конкретных атрибутов в БД
-        var modifiedGroupHbm = newGroupsHbm.stream()
-                .filter(g -> g.id().equals(groupToModify.id()))
-                .findFirst()
-                .orElseThrow();
+        // Проверка UI атрибутов (header и footer пустые)
+        Assertions.assertEquals(modifiedData.name(), modifiedGroupUI.name());
+        Assertions.assertEquals("", modifiedGroupUI.header());
+        Assertions.assertEquals("", modifiedGroupUI.footer());
 
-        var modifiedGroupJdbc = newGroupsJdbc.stream()
-                .filter(g -> g.id().equals(groupToModify.id()))
-                .findFirst()
-                .orElseThrow();
-
+        // Проверка БД атрибутов (header и footer сохраняются)
         Assertions.assertEquals(modifiedData.name(), modifiedGroupHbm.name());
-        Assertions.assertEquals(modifiedData.name(), modifiedGroupJdbc.name());
         Assertions.assertEquals(modifiedData.header(), modifiedGroupHbm.header());
-        Assertions.assertEquals(modifiedData.header(), modifiedGroupJdbc.header());
         Assertions.assertEquals(modifiedData.footer(), modifiedGroupHbm.footer());
+
+        Assertions.assertEquals(modifiedData.name(), modifiedGroupJdbc.name());
+        Assertions.assertEquals(modifiedData.header(), modifiedGroupJdbc.header());
         Assertions.assertEquals(modifiedData.footer(), modifiedGroupJdbc.footer());
     }
 
@@ -93,7 +92,7 @@ public class GroupModificationTestsWithDB extends TestBase {
         var groupToModify = oldGroupsHbm.get(0);
 
         var modifiedData = new GroupData()
-                .withName("Only Name Modified " + System.currentTimeMillis())
+                .withName(CommonFunctions.randomString(10))
                 .withHeader(groupToModify.header()) // сохраняем оригинальные значения
                 .withFooter(groupToModify.footer());
 

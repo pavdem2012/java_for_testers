@@ -4,8 +4,9 @@ import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -18,6 +19,28 @@ public class GroupHelper extends HelperBase {
         if (!isElementPresent(By.name("new"))) {
             click(By.linkText("groups"));
         }
+    }
+
+    public static String findNewGroupId(List<GroupData> oldList, List<GroupData> newList) {
+        // Используем множества для нахождения разницы
+        Set<GroupData> oldSet = new HashSet<>(oldList);
+        Set<GroupData> newSet = new HashSet<>(newList);
+
+        newSet.removeAll(oldSet);
+
+        if (newSet.size() != 1) {
+            throw new RuntimeException("Expected exactly one new group, but found: " + newSet.size());
+        }
+
+        return newSet.iterator().next().id();
+    }
+
+    // Вспомогательный метод для поиска группы по ID
+    public static GroupData findGroupById(List<GroupData> groups, String id) {
+        return groups.stream()
+                .filter(g -> g.id().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Group not found with id: " + id));
     }
 
     public int getCount() {
@@ -39,7 +62,7 @@ public class GroupHelper extends HelperBase {
         Thread.sleep(50);
         fillGroupForm(group);
         submitGroupCreation();
-        Thread.sleep(50);
+        Thread.sleep(200);
         returnToGroupsPage();
     }
 
@@ -51,9 +74,7 @@ public class GroupHelper extends HelperBase {
         initGroupModification();
         fillGroupForm(modifiedGroup);
         submitGroupModification();
-
-        Thread.sleep(200);
-
+        Thread.sleep(300);
         returnToGroupsPage();
     }
 

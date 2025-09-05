@@ -6,55 +6,47 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GroupCreationTestsWithDB extends TestBase {
 
     @ParameterizedTest
-    @MethodSource("tests.GroupCreationTests#singleRandomGroup")
+    @MethodSource("tests.GroupCreationTests#randomGroups")
     public void canCreateGroupWithFullDBCheck(GroupData group) throws InterruptedException {
         // Получаем исходные данные из всех источников
-        var oldGroupsUI = app.groups().getList();
-        var oldGroupsHbm = app.hbm().getGroupList();
-        var oldGroupsJdbc = app.jdbc().getGroupList();
+        var oldGroupsUI = Set.copyOf(app.groups().getList());
+        var oldGroupsHbm = Set.copyOf(app.hbm().getGroupList());
+        var oldGroupsJdbc = Set.copyOf(app.jdbc().getGroupList());
 
         // Создаем группу
         app.groups().createGroup(group);
 
         // Получаем новые данные
-        var newGroupsUI = app.groups().getList();
-        var newGroupsHbm = app.hbm().getGroupList();
-        var newGroupsJdbc = app.jdbc().getGroupList();
+        var newGroupsUI = Set.copyOf(app.groups().getList());
+        var newGroupsHbm = Set.copyOf(app.hbm().getGroupList());
+        var newGroupsJdbc = Set.copyOf(app.jdbc().getGroupList());
 
-        // Определяем ID новой группы
-        var newGroupId = newGroupsUI.get(newGroupsUI.size() - 1).id();
+        // Находим ID новой группы (разница между новым и старым множеством)
+        var newGroupId = newGroupsUI.stream()
+                .filter(g -> !oldGroupsUI.contains(g))
+                .findFirst()
+                .orElseThrow()
+                .id();
 
-        // Подготавливаем ожидаемые списки
-        var expectedUIList = new ArrayList<>(oldGroupsUI);
-        var expectedHbmList = new ArrayList<>(oldGroupsHbm);
-        var expectedJdbcList = new ArrayList<>(oldGroupsJdbc);
+        // Подготавливаем ожидаемые множества
+        var expectedUI = new HashSet<>(oldGroupsUI);
+        var expectedHbm = new HashSet<>(oldGroupsHbm);
+        var expectedJdbc = new HashSet<>(oldGroupsJdbc);
 
-        expectedUIList.add(group.withId(newGroupId).withHeader("").withFooter(""));
-        System.out.println(expectedUIList);
-        expectedHbmList.add(group.withId(newGroupId));
-        expectedJdbcList.add(group.withId(newGroupId));
+        expectedUI.add(group.withId(newGroupId).withHeader("").withFooter(""));
+        expectedHbm.add(group.withId(newGroupId));
+        expectedJdbc.add(group.withId(newGroupId));
 
-        // Сортируем все списки по ID
-        Comparator<GroupData> compareById = (o1, o2) ->
-                Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-
-        expectedUIList.sort(compareById);
-        expectedHbmList.sort(compareById);
-        expectedJdbcList.sort(compareById);
-        newGroupsUI.sort(compareById);
-        newGroupsHbm.sort(compareById);
-        newGroupsJdbc.sort(compareById);
-
-        // Проверки
-        Assertions.assertEquals(expectedUIList, newGroupsUI, "UI списки не совпадают");
-        Assertions.assertEquals(expectedHbmList, newGroupsHbm, "Hibernate списки не совпадают");
-        Assertions.assertEquals(expectedJdbcList, newGroupsJdbc, "JDBC списки не совпадают");
+        // Проверки множеств
+        Assertions.assertEquals(expectedUI, newGroupsUI, "UI множества не совпадают");
+        Assertions.assertEquals(expectedHbm, newGroupsHbm, "Hibernate множества не совпадают");
+        Assertions.assertEquals(expectedJdbc, newGroupsJdbc, "JDBC множества не совпадают");
 
         // Проверка количества
         Assertions.assertEquals(oldGroupsUI.size() + 1, newGroupsUI.size());
@@ -84,13 +76,13 @@ public class GroupCreationTestsWithDB extends TestBase {
     public void canCreateGroupWithEmptyFieldsDBCheck() throws InterruptedException {
         var group = new GroupData().withName("").withHeader("").withFooter("");
 
-        var oldGroupsHbm = app.hbm().getGroupList();
-        var oldGroupsJdbc = app.jdbc().getGroupList();
+        var oldGroupsHbm = Set.copyOf(app.hbm().getGroupList());
+        var oldGroupsJdbc = Set.copyOf(app.jdbc().getGroupList());
 
         app.groups().createGroup(group);
 
-        var newGroupsHbm = app.hbm().getGroupList();
-        var newGroupsJdbc = app.jdbc().getGroupList();
+        var newGroupsHbm = Set.copyOf(app.hbm().getGroupList());
+        var newGroupsJdbc = Set.copyOf(app.jdbc().getGroupList());
 
         Assertions.assertEquals(oldGroupsHbm.size() + 1, newGroupsHbm.size());
         Assertions.assertEquals(oldGroupsJdbc.size() + 1, newGroupsJdbc.size());
