@@ -12,8 +12,10 @@ import model.GroupData;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static manager.ContactsHelper.*;
 
@@ -54,88 +56,78 @@ public class Generator {
         }
     }
 
+    private Object generateData(Supplier<Object> dataSupplier) {
+        return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
+    }
 
     private Object generateGroups() {
-        var result = new ArrayList<GroupData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new GroupData()
-                    .withName(CommonFunctions.randomString(i + 10))
-                    .withHeader(CommonFunctions.randomString(i + 10))
-                    .withFooter(CommonFunctions.randomString(i + 10)));
-        }
-        return result;
+        return generateData(() -> new GroupData()
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(10))
+                .withFooter(CommonFunctions.randomString(10)));
     }
 
     private Object generateNegativeGroups() {
-        var result = new ArrayList<GroupData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new GroupData()
-                    .withName(CommonFunctions.randomString(i + 10) + "'")
-                    .withHeader(CommonFunctions.randomString(i + 10) + "'")
-                    .withFooter(CommonFunctions.randomString(i + 10) + "'"));
-        }
-        return result;
+
+        return generateData(() -> new GroupData()
+                .withName(CommonFunctions.randomString(10) + "'")
+                .withHeader(CommonFunctions.randomString(10) + "'")
+                .withFooter(CommonFunctions.randomString(10) + "'"));
     }
 
     private Object generateContacts() {
-        var result = new ArrayList<ContactData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new ContactData()
-                    .withFirstName(ContactsHelper.generateRandomString(i + 5))
-                    .withMiddleName(ContactsHelper.generateRandomString(i + 5))
-                    .withLastName(ContactsHelper.generateRandomString(i + 5))
-                    .withNickname(ContactsHelper.generateRandomString(i + 5))
-                    .withPhoto(randomFile("src/test/resources/images"))
-                    .withTitle(ContactsHelper.generateRandomString(i + 10))
-                    .withCompany(ContactsHelper.generateRandomString(i + 10))
-                    .withAddress(ContactsHelper.generateRandomString(i + 15))
-                    .withHomePhone(ContactsHelper.generateRandomPhone())
-                    .withMobilePhone(ContactsHelper.generateRandomPhone())
-                    .withWorkPhone(ContactsHelper.generateRandomPhone())
-                    .withFax(ContactsHelper.generateRandomString(i + 7))
-                    .withEmail1(ContactsHelper.generateRandomEmail())
-                    .withEmail2(ContactsHelper.generateRandomEmail())
-                    .withEmail3(ContactsHelper.generateRandomEmail())
-                    .withHomepage("https://" + ContactsHelper.generateRandomString(5) + ".com")
-                    .withBirthdayDay(ContactsHelper.generateRandomDay())
-                    .withBirthdayMonth(ContactsHelper.generateRandomMonth())
-                    .withBirthdayYear(ContactsHelper.generateRandomYear(1900, 2000))
-                    .withAnniversaryDay(ContactsHelper.generateRandomDay())
-                    .withAnniversaryMonth(ContactsHelper.generateRandomMonth())
-                    .withAnniversaryYear(ContactsHelper.generateRandomYear(2000, 2025))
-                    .withGroup(ContactsHelper.generateRandomGroup()));
-        }
-        return result;
+        return generateData(() -> new ContactData()
+                .withFirstName(ContactsHelper.generateRandomString(5))
+                .withMiddleName(ContactsHelper.generateRandomString(5))
+                .withLastName(ContactsHelper.generateRandomString(5))
+                .withNickname(ContactsHelper.generateRandomString(5))
+                .withPhoto(randomFile("src/test/resources/images"))
+                .withTitle(ContactsHelper.generateRandomString(10))
+                .withCompany(ContactsHelper.generateRandomString(10))
+                .withAddress(ContactsHelper.generateRandomString(15))
+                .withHomePhone(ContactsHelper.generateRandomPhone())
+                .withMobilePhone(ContactsHelper.generateRandomPhone())
+                .withWorkPhone(ContactsHelper.generateRandomPhone())
+                .withFax(ContactsHelper.generateRandomString(7))
+                .withEmail1(ContactsHelper.generateRandomEmail())
+                .withEmail2(ContactsHelper.generateRandomEmail())
+                .withEmail3(ContactsHelper.generateRandomEmail())
+                .withHomepage("https://" + ContactsHelper.generateRandomString(5) + ".com")
+                .withBirthdayDay(ContactsHelper.generateRandomDay())
+                .withBirthdayMonth(ContactsHelper.generateRandomMonth())
+                .withBirthdayYear(ContactsHelper.generateRandomYear(1900, 2000))
+                .withAnniversaryDay(ContactsHelper.generateRandomDay())
+                .withAnniversaryMonth(ContactsHelper.generateRandomMonth())
+                .withAnniversaryYear(ContactsHelper.generateRandomYear(2000, 2025))
+                .withGroup(ContactsHelper.generateRandomGroup()));
+
     }
 
     private Object generateNegativeContacts() {
-        var result = new ArrayList<ContactData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new ContactData()
-                    .withFirstName(CommonFunctions.randomString(i + 5) + "'")
-                    .withMiddleName(CommonFunctions.randomString(i + 5) + "'")
-                    .withLastName(CommonFunctions.randomString(i + 5) + "'")
-                    .withNickname(CommonFunctions.randomString(i + 5) + "'")
-                    .withPhoto(randomFile("src/test/resources/images"))
-                    .withTitle(CommonFunctions.randomString(i + 5) + "'")
-                    .withCompany(CommonFunctions.randomString(i + 5) + "'")
-                    .withAddress(CommonFunctions.randomString(i + 10) + "'")
-                    .withHomePhone(generateRandomPhone() + "'")
-                    .withMobilePhone(generateRandomPhone() + "'")
-                    .withWorkPhone(generateRandomPhone() + "'")
-                    .withFax(CommonFunctions.randomString(i + 5) + "'")
-                    .withEmail1(generateRandomEmail() + "'")
-                    .withEmail2(generateRandomEmail() + "'")
-                    .withEmail3(generateRandomEmail() + "'")
-                    .withHomepage("https://" + CommonFunctions.randomString(5))
-                    .withBirthdayDay(generateRandomDay())
-                    .withBirthdayMonth(generateRandomMonth())
-                    .withBirthdayYear(generateRandomYear(1900, 2000))
-                    .withAnniversaryDay(generateRandomDay())
-                    .withAnniversaryMonth(generateRandomMonth())
-                    .withAnniversaryYear(generateRandomYear(2000, 2025)));
-        }
-        return result;
+        return generateData(() -> new ContactData()
+                .withFirstName(CommonFunctions.randomString(5) + "'")
+                .withMiddleName(CommonFunctions.randomString(5) + "'")
+                .withLastName(CommonFunctions.randomString(5) + "'")
+                .withNickname(CommonFunctions.randomString(5) + "'")
+                .withPhoto(randomFile("src/test/resources/images"))
+                .withTitle(CommonFunctions.randomString(5) + "'")
+                .withCompany(CommonFunctions.randomString(5) + "'")
+                .withAddress(CommonFunctions.randomString(10) + "'")
+                .withHomePhone(generateRandomPhone() + "'")
+                .withMobilePhone(generateRandomPhone() + "'")
+                .withWorkPhone(generateRandomPhone() + "'")
+                .withFax(CommonFunctions.randomString(5) + "'")
+                .withEmail1(generateRandomEmail() + "'")
+                .withEmail2(generateRandomEmail() + "'")
+                .withEmail3(generateRandomEmail() + "'")
+                .withHomepage("https://" + CommonFunctions.randomString(5))
+                .withBirthdayDay(generateRandomDay())
+                .withBirthdayMonth(generateRandomMonth())
+                .withBirthdayYear(generateRandomYear(1900, 2000))
+                .withAnniversaryDay(generateRandomDay())
+                .withAnniversaryMonth(generateRandomMonth())
+                .withAnniversaryYear(generateRandomYear(2000, 2025)));
+
     }
 
     private String randomFile(String dir) {
