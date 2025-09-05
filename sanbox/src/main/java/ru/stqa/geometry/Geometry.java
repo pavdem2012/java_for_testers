@@ -4,12 +4,21 @@ import ru.stqa.geometry.figures.Rectangle;
 import ru.stqa.geometry.figures.Square;
 import ru.stqa.geometry.figures.Triangle;
 
+import java.util.List;
+
 
 public class Geometry {
     public static void main(String[] args) {
-        Square.printArea(new Square(7.0));
+        var squares = List.of(new Square(7.0), new Square(5.0),new Square(4.0));
+/*        for (Square square : squares) {
+            Square.printArea(square);
+        }*/
+        squares.forEach(Square::printArea);
+
+
+/*        Square.printArea(new Square(7.0));
         Square.printArea(new Square(5.0));
-        Square.printArea(new Square(4.0));
+        Square.printArea(new Square(4.0));*/
 
         Square.printPerimeter(new Square(8.0));
 
