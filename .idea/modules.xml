@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/adressbook_web_tests.iml" filepath="$PROJECT_DIR$/adressbook_web_tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/adressbook_web_tests.main.iml" filepath="$PROJECT_DIR$/.idea/modules/adressbook_web_tests.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/adressbook_web_tests.test.iml" filepath="$PROJECT_DIR$/.idea/modules/adressbook_web_tests.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mantis_tests.iml" filepath="$PROJECT_DIR$/mantis_tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis_tests.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis_tests.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis_tests.test.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis_tests.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/sanbox.iml" filepath="$PROJECT_DIR$/sanbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sanbox.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sanbox.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sanbox.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sanbox.test.iml" />
