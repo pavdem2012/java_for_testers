@@ -17,4 +17,16 @@ public class SessionHelper extends HelperBase {
     public boolean isLoggedIn() {
         return isElementsPresent(By.cssSelector("span.user-info"));
     }
+
+    public void logout() {
+        if (isLoggedIn()) {
+            click(By.cssSelector("a[href*='logout']"));
+        }
+    }
+
+    public void ensureLoggedOut() {
+        if (isLoggedIn()) {
+            logout();
+        }
+    }
 }

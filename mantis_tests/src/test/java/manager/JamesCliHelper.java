@@ -21,6 +21,5 @@ public class JamesCliHelper extends HelperBase {
         cmd.copyOutputTo(out);
         cmd.execute();
         cmd.waitFor();
-        System.out.println("Command output: " + out);
     }
 }

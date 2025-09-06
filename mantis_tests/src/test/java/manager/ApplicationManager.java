@@ -1,8 +1,10 @@
 package manager;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.Properties;
@@ -25,9 +27,14 @@ public class ApplicationManager {
     public WebDriver driver() {
         if (driver == null) {
             if ("firefox".equals(browser)) {
+                WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver();
             } else if ("chrome".equals(browser)) {
-                driver = new ChromeDriver();
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--remote-allow-origins=*");
+                options.addArguments("--start-maximized");
+                driver = new ChromeDriver(options);
             } else {
                 throw new IllegalArgumentException(String.format("Unknown browser %s", browser));
             }
