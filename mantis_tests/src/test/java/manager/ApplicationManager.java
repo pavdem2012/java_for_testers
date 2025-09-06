@@ -51,6 +51,7 @@ public class ApplicationManager {
         }
         return httpSessionHelper;
     }
+
     public JamesCliHelper jamesCli() {
         if (jamesCliHelper == null) {
             jamesCliHelper = new JamesCliHelper(this);
@@ -64,6 +65,7 @@ public class ApplicationManager {
         }
         return mailHelper;
     }
+
     public String property(String name) {
         return properties.getProperty(name);
     }
