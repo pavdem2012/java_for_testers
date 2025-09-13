@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class TestBase {
-    protected static ApplicationManager app;
+    public static ApplicationManager app;
+    //protected static ApplicationManager app;
 
     @BeforeEach
     public void setUp() throws IOException {
