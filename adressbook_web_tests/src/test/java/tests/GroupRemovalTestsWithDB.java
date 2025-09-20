@@ -1,22 +1,27 @@
 package tests;
 
+import io.qameta.allure.Allure;
 import model.GroupData;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GroupRemovalTestsWithDB extends TestBase {
 
     @Test
+    @Order(1)
     public void canRemoveGroupWithFullDBCheck() throws InterruptedException {
-        preconditionCheck();
-        var oldGroupsUI = app.groups().getList();
+        Allure.step("Checking precondition", step -> {
+            if (app.hbm().getGroupCount() == 0) {
+                app.hbm().createGroup(new GroupData("", "group name DB Remove", "group header DB Remove", "group footer DB Remove"));
+            }
+        });
         var oldGroupsHbm = app.hbm().getGroupList();
         var oldGroupsJdbc = app.jdbc().getGroupList();
-
+        var oldGroupsUI = app.groups().getList();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroupsUI.size());
         var groupToRemove = oldGroupsUI.get(index);
@@ -70,11 +75,18 @@ public class GroupRemovalTestsWithDB extends TestBase {
 
 
     @Test
-    public void canRemoveAllGroupsWithDBCheck() {
-        preconditionCheck();
+    @Order(2)
+    public void canRemoveAllGroupsWithDBCheck() throws InterruptedException {
+
+        Allure.step("Checking precondition", step -> {
+            if (app.hbm().getGroupCount() == 0) {
+                app.hbm().createGroup(new GroupData("", "group name for Remove", "group header for Remove", "group footer for Remove"));
+            }
+            Thread.sleep(400);
+        });
 
         app.groups().removeAllGroups();
-
+        Thread.sleep(400);
         var uiCount = app.groups().getCount();
         var hbmCount = app.hbm().getGroupCount();
         var jdbcCount = app.jdbc().getGroupList().size();
@@ -88,11 +100,5 @@ public class GroupRemovalTestsWithDB extends TestBase {
 
         Assertions.assertTrue(hbmGroups.isEmpty(), "Список Hibernate не пустой");
         Assertions.assertTrue(jdbcGroups.isEmpty(), "Список JDBC не пустой");
-    }
-
-    private static void preconditionCheck() {
-        if (app.hbm().getGroupCount() == 0) {
-            app.hbm().createGroup(new GroupData("", "group name AtOnceDB Remove", "group header AtOnceDB Remove", "group footer AtOnceDB Remove"));
-        }
     }
 }

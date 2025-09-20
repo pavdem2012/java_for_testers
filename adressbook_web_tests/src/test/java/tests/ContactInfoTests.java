@@ -39,13 +39,14 @@ public class ContactInfoTests extends TestBase {
     void testPhones() {
         var contacts = app.hbm().getContactList();
         var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contact ->
-            Stream.of(contact.homePhone(), contact.mobilePhone(), contact.workPhone())
-                    .filter(s -> s != null && ! "".equals(s))
-                    .collect(Collectors.joining("\n"))
+                Stream.of(contact.homePhone(), contact.mobilePhone(), contact.workPhone())
+                        .filter(s -> s != null && !"".equals(s))
+                        .collect(Collectors.joining("\n"))
         ));
         var phones = app.contacts().getPhones();
         Assertions.assertEquals(expected, phones);
     }
+
     @Test
     void testAddress() {
         // Получаем адрес с главной страницы

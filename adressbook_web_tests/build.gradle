@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'org.example'
@@ -9,7 +10,21 @@ repositories {
     mavenCentral()
 }
 
+def allureVersion = '2.24.0'
+def aspectJVersion = '1.9.20.1'
+
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
+
 dependencies {
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
+
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation "io.qameta.allure:allure-junit5"
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
@@ -21,12 +36,23 @@ dependencies {
 
 }
 
+allure {
+    version = allureVersion
+    autoconfigure = true
+    useJUnit5 {
+        version = allureVersion
+    }
+}
 test {
     useJUnitPlatform()
-    if (project.hasProperty("browser")){
+    if (project.hasProperty("browser")) {
         systemProperty("browser", project.property("browser"))
     }
-    if (project.hasProperty("target")){
+    if (project.hasProperty("target")) {
         systemProperty("target", project.property("target"))
     }
+    jvmArgs = ["-javaagent:${configurations.agent.singleFile}"]
+
+    systemProperty 'allure.results.directory', 'allure-results'
+
 }

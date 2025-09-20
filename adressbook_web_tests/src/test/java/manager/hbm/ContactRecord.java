@@ -1,6 +1,10 @@
 package manager.hbm;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +38,7 @@ public class ContactRecord {
 
     @ManyToMany(mappedBy = "contacts")
     public Set<GroupRecord> groups = new HashSet<>();
+
     public ContactRecord() {
     }
 

@@ -1,5 +1,6 @@
 package manager;
 
+import io.qameta.allure.Step;
 import manager.hbm.ContactRecord;
 import manager.hbm.GroupRecord;
 import model.ContactData;
@@ -42,18 +43,22 @@ public class HibernateHelper extends HelperBase {
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
     }
 
+    @Step
     public List<GroupData> getGroupList() {
         return convertGroupList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord", GroupRecord.class).list();
         }));
     }
 
-    public long getGroupCount() {
+    @Step
+    public long getGroupCount() throws InterruptedException {
+        Thread.sleep(50);
         return sessionFactory.fromSession(session -> {
             return session.createQuery("select count (*) from GroupRecord", Long.class).getSingleResult();
         });
     }
 
+    @Step
     public void createGroup(GroupData groupData) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
@@ -124,18 +129,21 @@ public class HibernateHelper extends HelperBase {
         );
     }
 
+    @Step
     public List<ContactData> getContactList() {
         return convertContactList(sessionFactory.fromSession(session -> {
             return session.createQuery("from ContactRecord", ContactRecord.class).list();
         }));
     }
 
+    @Step
     public long getContactCount() {
         return sessionFactory.fromSession(session -> {
             return session.createQuery("select count (*) from ContactRecord", Long.class).getSingleResult();
         });
     }
 
+    @Step
     public List<ContactData> getContactsInGroup(GroupData group) {
         return sessionFactory.fromSession(session -> {
             var groupRecord = session.get(GroupRecord.class, Integer.parseInt(group.id()));
@@ -143,6 +151,7 @@ public class HibernateHelper extends HelperBase {
         });
     }
 
+    @Step
     public ContactData getContactById(String id) {
         return sessionFactory.fromSession(session -> {
             var contactRecord = session.get(ContactRecord.class, Integer.parseInt(id));

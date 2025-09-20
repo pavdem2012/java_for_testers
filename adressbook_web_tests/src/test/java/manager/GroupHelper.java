@@ -1,5 +1,6 @@
 package manager;
 
+import io.qameta.allure.Step;
 import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 
 public class GroupHelper extends HelperBase {
+
     public GroupHelper(ApplicationManager manager) {
         super(manager);
     }
@@ -43,16 +45,23 @@ public class GroupHelper extends HelperBase {
                 .orElseThrow(() -> new RuntimeException("Group not found with id: " + id));
     }
 
+    @Step
     public int getCount() {
         GroupHelper.openGroupsPage();
         return manager.driver.findElements(By.name("selected[]")).size();
     }
 
-    public void removeGroup(GroupData group) {
+    @Step
+    public void removeGroup(GroupData group) throws InterruptedException {
+        Thread.sleep(50);
         openGroupsPage();
+        Thread.sleep(50);
         selectGroup(group);
+        Thread.sleep(50);
         removeSelectedGroups();
+        Thread.sleep(50);
         returnToGroupsPage();
+        Thread.sleep(50);
     }
 
 
@@ -112,11 +121,16 @@ public class GroupHelper extends HelperBase {
         click(By.name("submit"));
     }
 
-
-    public void removeAllGroups() {
+    @Step
+    public void removeAllGroups() throws InterruptedException {
         openGroupsPage();
+        driver.navigate().refresh();
+        Thread.sleep(150);
+        driver.navigate().refresh();
         selectAllGroups();
+        Thread.sleep(50);
         removeSelectedGroups();
+        Thread.sleep(100);
     }
 
     private void selectAllGroups() {
@@ -125,8 +139,10 @@ public class GroupHelper extends HelperBase {
                 .forEach(WebElement::click);
     }
 
-    public List<GroupData> getList() {
+    @Step
+    public List<GroupData> getList() throws InterruptedException {
         openGroupsPage();
+        Thread.sleep(500);
         var spans = manager.driver.findElements(By.cssSelector("span.group"));
         return spans.stream()
                 .map(span -> {
@@ -137,4 +153,5 @@ public class GroupHelper extends HelperBase {
                 })
                 .collect(Collectors.toList());
     }
+
 }

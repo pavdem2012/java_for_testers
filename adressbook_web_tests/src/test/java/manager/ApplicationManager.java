@@ -1,18 +1,18 @@
 package manager;
+
 import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class ApplicationManager {
     protected WebDriver driver;
@@ -75,6 +75,7 @@ public class ApplicationManager {
         }
         return hbm;
     }
+
     public void addContactToGroup(ContactData contact, GroupData group) {
         openHomePage();
         selectContactById(contact.id());
@@ -94,6 +95,7 @@ public class ApplicationManager {
             driver.findElement(By.linkText("home")).click();
         }
     }
+
     private boolean isElementPresent(By locator) {
         try {
             driver.findElement(locator);

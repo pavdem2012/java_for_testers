@@ -220,6 +220,7 @@ public class ContactsHelper extends HelperBase {
         }
         return result;
     }
+
     public String getAddress(ContactData contact) {
         return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[4]", contact.id()))).getText();
     }

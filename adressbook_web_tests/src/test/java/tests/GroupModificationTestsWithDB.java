@@ -109,7 +109,7 @@ public class GroupModificationTestsWithDB extends TestBase {
         Assertions.assertEquals(groupToModify.footer(), modifiedGroup.footer());
     }
 
-    private static void preconditionCheck() {
+    private static void preconditionCheck() throws InterruptedException {
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name HBM Modify create", "group header HBM Modify create", "group footer HBM Modify create"));
         }

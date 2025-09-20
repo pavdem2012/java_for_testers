@@ -102,7 +102,7 @@ public class ContactCreationTests extends TestBase {
     }
 
     @Test
-    void canCreateContactInGroup() {
+    void canCreateContactInGroup() throws InterruptedException {
         var contact = new ContactData()
                 .withFirstName(CommonFunctions.randomString(10))
                 .withLastName(CommonFunctions.randomString(10))
