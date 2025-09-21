@@ -24,7 +24,7 @@ public class GroupHelper extends HelperBase {
     }
 
     public static String findNewGroupId(List<GroupData> oldList, List<GroupData> newList) {
-        // Используем множества для нахождения разницы
+        //Using sets to find the difference
         Set<GroupData> oldSet = new HashSet<>(oldList);
         Set<GroupData> newSet = new HashSet<>(newList);
 
