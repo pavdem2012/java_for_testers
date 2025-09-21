@@ -131,7 +131,7 @@ public class GroupCreationTests extends TestBase {
 
         // Добавляем новую группу с правильными ID
         expectedUIList.add(group.withId(newId).withHeader("").withFooter(""));
-        expectedListDB.add(group.withId(newId)); // Используем тот же ID для согласованности
+        expectedListDB.add(group.withId(newId));
         expectedListDBHbm.add(group.withId(newId));
 
         // Compare across sets (ignores ord
