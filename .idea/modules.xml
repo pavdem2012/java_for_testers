@@ -9,8 +9,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis_tests.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis_tests.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis_tests.test.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis_tests.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/sanbox.iml" filepath="$PROJECT_DIR$/sanbox.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sanbox.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sanbox.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sanbox.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sanbox.test.iml" />
     </modules>
   </component>
 </project>

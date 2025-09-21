@@ -20,18 +20,19 @@ public class CollectionTests {
         array[0] = "d";
         Assertions.assertEquals("d", array[0]);
     }
+
     @Test
-    void listTests(){
+    void listTests() {
         //var list = List.of("a", "b", "c"); //немодифицированный
         //var list  = new ArrayList<String>();
-        var list  = new ArrayList<>(List.of("a", "b", "c", "a"));
+        var list = new ArrayList<>(List.of("a", "b", "c", "a"));
         Assertions.assertEquals(4, list.size());
         list.add("a");
         list.add("b");
         list.add("c");
         Assertions.assertEquals(7, list.size());
         Assertions.assertEquals("a", list.get(0));
-        list.set(0,"d");
+        list.set(0, "d");
         Assertions.assertEquals("d", list.get(0));
     }
 
@@ -45,6 +46,7 @@ public class CollectionTests {
         set.add("T");
         Assertions.assertEquals(4, set.size());
     }
+
     @Test
     void testMap() {
         var digits = new HashMap<Character, String>();
@@ -58,11 +60,10 @@ public class CollectionTests {
         digits.put('7', "seven");
         digits.put('8', "eight");
         digits.put('9', "nine");
-    Assertions.assertEquals("one", digits.get('1'));
+        Assertions.assertEquals("one", digits.get('1'));
         digits.put('1', "один");
         Assertions.assertNotEquals("one", digits.get('1'));
         Assertions.assertEquals("один", digits.get('1'));
-
 
 
     }

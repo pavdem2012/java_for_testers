@@ -11,7 +11,7 @@ import io.swagger.client.model.Issue;
 import io.swagger.client.model.User;
 import manager.model.IssueData;
 
-public class RestApiHelper extends HelperBase{
+public class RestApiHelper extends HelperBase {
     public RestApiHelper(ApplicationManager manager) {
         super(manager);
         ApiClient defaultClient = Configuration.getDefaultApiClient();
@@ -33,7 +33,7 @@ public class RestApiHelper extends HelperBase{
 
         try {
             apiInstance.issueAdd(issue);
-        }catch (ApiException e){
+        } catch (ApiException e) {
             new RuntimeException(e);
         }
     }

@@ -90,12 +90,14 @@ public class ApplicationManager {
         }
         return restApiHelper;
     }
+
     public UserHelper user() {
         if (userHelper == null) {
             userHelper = new UserHelper(this);
         }
         return userHelper;
     }
+
     public String property(String name) {
         return properties.getProperty(name);
     }

@@ -4,7 +4,7 @@ import common.CommonFunctions;
 import manager.model.IssueData;
 import org.junit.jupiter.api.Test;
 
-public class IssueCreationTests extends TestBase{
+public class IssueCreationTests extends TestBase {
     @Test
     void canCreateIssue() {
         app.rest().createIssue(new IssueData()

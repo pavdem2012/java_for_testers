@@ -1,4 +1,5 @@
 package tests;
+
 import common.CommonFunctions;
 import manager.MailHelper;
 import manager.UserHelper;
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 
 public class UserRegistrationTests extends TestBase {
 
-// создать адрес на почтовом сервере (JamesHelper)
+    // создать адрес на почтовом сервере (JamesHelper)
 // заполнить форму создания  и отправляем (в браузере)
 // ждем и получаем почту по var email (MailHelper)
 // извлекаем ссылку из письма

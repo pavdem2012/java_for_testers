@@ -101,6 +101,7 @@ public class MailHelper extends HelperBase {
             throw new RuntimeException(e);
         }
     }
+
     public static String extractConfirmationUrl(List<MailMessage> messages) {
         String text = messages.get(0).content();
         Pattern pattern = Pattern.compile("http://[^\\s]+");
