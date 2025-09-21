@@ -29,7 +29,7 @@ public class ContactGroupTests extends TestBase {
         GroupData targetGroup = null;
         ContactData contactToAdd = null;
 
-        // Ищем группу с контактами не в группе
+// Looking for a group with contacts not in the group
         for (var group : groups) {
             var contactsNotInGroup = app.getContactsNotInGroup(group);
             System.out.println("Group " + group.name() + " has " + contactsNotInGroup.size() + " contacts not in group");
@@ -48,7 +48,8 @@ public class ContactGroupTests extends TestBase {
                     .withLastName("For Group Test");
             app.contacts().createContact(newContact);
 
-            // Ищем созданный контакт
+
+// Search for the created contact
             contactToAdd = findContactByName(newContact.firstName());
             System.out.println("Created new contact: " + contactToAdd.firstName() + " " + contactToAdd.lastName());
         }
@@ -72,7 +73,7 @@ public class ContactGroupTests extends TestBase {
         GroupData targetGroup = null;
         ContactData contactToRemove = null;
 
-        // Ищем группу с контактами
+// Looking for a group with contacts
         for (var group : groups) {
             var contactsInGroup = app.getContactsInGroup(group);
             System.out.println("Group " + group.name() + " has " + contactsInGroup.size() + " contacts in group");

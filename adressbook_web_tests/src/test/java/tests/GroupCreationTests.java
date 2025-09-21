@@ -134,7 +134,7 @@ public class GroupCreationTests extends TestBase {
         expectedListDB.add(group.withId(newId)); // Используем тот же ID для согласованности
         expectedListDBHbm.add(group.withId(newId));
 
-        // Сравниваем через множества (игнорирует порядок)
+        // Compare across sets (ignores ord
         Assertions.assertEquals(Set.copyOf(newUIGroups), Set.copyOf(expectedUIList));
         Assertions.assertEquals(Set.copyOf(newGroupsDB), Set.copyOf(expectedListDB));
         Assertions.assertEquals(Set.copyOf(newGroupsDBHbm), Set.copyOf(expectedListDBHbm));
